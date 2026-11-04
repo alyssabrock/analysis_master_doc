@@ -1,0 +1,7 @@
+---
+title: "Every Kind of Analysis You Could Possibly Want to Do "
+subtitle: "Alyssa Brock and Avneet Virk"
+output: pdf_document
+---
+
+**Data Exploration and Assessing Assumptions**
