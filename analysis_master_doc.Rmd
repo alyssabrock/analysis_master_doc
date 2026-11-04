@@ -4,6 +4,16 @@ subtitle: "Alyssa Brock and Avneet Virk"
 output: pdf_document
 ---
 
+**Data Wrangling and Management**
+
 **Data Exploration and Assessing Assumptions**
 
-test knitted 2
+**Comparing Means/Medians**
+
+**Relationships and Associations**
+
+**Regression and Prediction**
+
+**Model Building and Comparison**
+
+**Visualization/ Presentation of Results**
