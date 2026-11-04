@@ -6,4 +6,4 @@ output: pdf_document
 
 **Data Exploration and Assessing Assumptions**
 
-test knitted
+test knitted 2
