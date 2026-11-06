@@ -8,7 +8,208 @@ output: pdf_document
 
 ### 1. Data Structure and Initial Inspection
 
+Understanding the dataset before conducting any analysis.
+
+\begin{itemize}
+\item Dataset dimensions (rows and columns)
+\item Variable types (numeric, categorical, ordinal, date/time)
+\item Continuous vs. discrete variables
+\item Identifying unique observations and duplicate records
+\item Identifying unique values and categories
+\item Data types and class conversion
+\item Data consistency and formatting
+\item Identifying invalid or impossible values
+\item Data validation and integrity checks
+\end{itemize}
+
+R functions: str(), glimpse(), summary(), head(), dim(), nrow(), ncol(), unique(), table()
+
 ### 2. Descriptive Statistics and Summary Measures
+
+Summarizing the characteristics and distribution of variables.
+
+\begin{itemize}
+\item Mean, median, and mode
+\item Minimum and maximum
+\item Range
+\item Variance and standard deviation
+\item Interquartile range (IQR)
+\item Quartiles and percentiles
+\item Coefficient of variation
+\item Skewness
+\item Kurtosis
+\item Five-number summary
+\item Grouped summary statistics
+\item Weighted descriptive statistics
+\end{itemize}
+
+#### 2.1 Measures of Central Tendency
+
+Measures used to identify the center or typical value of a dataset.
+
+\begin{itemize}
+    \item \texttt{mean()} -- Arithmetic mean
+    \item \texttt{median()} -- Median
+    \item \texttt{Mode()} -- Mode (from \texttt{DescTools}; base R does not have a built-in statistical mode function)
+    \item \texttt{weighted.mean()} -- Weighted mean
+    \item \texttt{Hmisc::wtd.mean()} -- Weighted mean with additional options
+    \item \texttt{DescTools::Mode()} -- Statistical mode
+\end{itemize}
+
+#### 2.2 Measures of Variability and Dispersion
+
+Measures used to quantify the spread or variability of observations.
+
+\begin{itemize}
+    \item \texttt{var()} -- Variance
+    \item \texttt{sd()} -- Standard deviation
+    \item \texttt{IQR()} -- Interquartile range
+    \item \texttt{range()} -- Minimum and maximum
+    \item \texttt{diff(range())} -- Range width
+    \item \texttt{mad()} -- Median absolute deviation
+    \item \texttt{DescTools::Var()} -- Variance
+    \item \texttt{DescTools::CoefVar()} -- Coefficient of variation
+    \item \texttt{matrixStats::rowVars()} -- Row-wise variance
+    \item \texttt{matrixStats::colVars()} -- Column-wise variance
+\end{itemize}
+
+#### 2.3 Measures of Position and Distribution
+
+Measures used to describe the relative position and distribution of observations.
+
+\begin{itemize}
+    \item \texttt{min()} -- Minimum
+    \item \texttt{max()} -- Maximum
+    \item \texttt{quantile()} -- Quantiles
+    \item \texttt{rank()} -- Observation ranks
+    \item \texttt{scale()} -- Standardization
+    \item \texttt{ecdf()} -- Empirical cumulative distribution function
+    \item \texttt{summary()} -- Summary statistics
+    \item \texttt{fivenum()} -- Five-number summary
+    \item \texttt{Hmisc::describe()} -- Detailed descriptive statistics
+    \item \texttt{psych::describe()} -- Comprehensive descriptive statistics
+\end{itemize}
+
+#### 2.4 Shape of Distribution
+
+Measures used to describe the shape and characteristics of a distribution.
+
+\begin{itemize}
+    \item \texttt{e1071::skewness()} -- Skewness
+    \item \texttt{moments::skewness()} -- Skewness
+    \item \texttt{e1071::kurtosis()} -- Kurtosis
+    \item \texttt{moments::kurtosis()} -- Kurtosis
+    \item \texttt{PerformanceAnalytics::skewness()} -- Skewness
+    \item \texttt{PerformanceAnalytics::kurtosis()} -- Kurtosis
+\end{itemize}
+
+\textit{Note: Different packages can use different conventions for calculating skewness and kurtosis, so be mindful of the definitions.}
+
+#### 2.5 Frequency and Categorical Summaries
+
+Functions used to summarize categorical variables and frequency distributions.
+
+\begin{itemize}
+    \item \texttt{table()} -- Frequency counts
+    \item \texttt{prop.table()} -- Proportions
+    \item \texttt{margin.table()} -- Marginal frequencies
+    \item \texttt{addmargins()} -- Add row and column totals
+    \item \texttt{xtabs()} -- Cross-tabulation
+    \item \texttt{janitor::tabyl()} -- Tidy frequency tables
+    \item \texttt{janitor::adorn\_totals()} -- Add totals to frequency tables
+    \item \texttt{dplyr::count()} -- Count observations by group
+\end{itemize}
+
+#### 2.6 Grouped and Advanced Summaries
+
+Functions used to calculate descriptive statistics across groups, columns, or other subsets of data.
+
+\begin{itemize}
+    \item \texttt{dplyr::summarise()} -- Calculate summary statistics
+    \item \texttt{dplyr::group\_by()} -- Group observations
+    \item \texttt{dplyr::across()} -- Apply functions across multiple columns
+    \item \texttt{aggregate()} -- Grouped summary statistics
+    \item \texttt{by()} -- Apply functions to subsets
+    \item \texttt{tapply()} -- Apply functions by groups
+    \item \texttt{vapply()} -- Type-safe vectorized application
+    \item \texttt{purrr::map()} -- Apply functions across objects
+    \item \texttt{data.table::.(...)} -- Efficient grouped calculations with \texttt{data.table}
+\end{itemize}
+
+#### 2.7 Additional Useful Packages
+
+Packages that provide additional functionality for descriptive statistics and summary analysis.
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+\textbf{Package} & \textbf{Main Purpose} \\
+\hline
+\texttt{psych} & Comprehensive descriptive statistics \\
+\texttt{DescTools} & Statistical summaries and descriptive measures \\
+\texttt{Hmisc} & Descriptive statistics and weighted summaries \\
+\texttt{skimr} & Quick, readable dataset summaries \\
+\texttt{summarytools} & Detailed descriptive reports \\
+\texttt{janitor} & Frequency tables and data cleaning \\
+\texttt{moments} & Skewness and kurtosis \\
+\texttt{e1071} & Statistical moments and other statistical tools \\
+\texttt{matrixStats} & Efficient row/column statistics \\
+\texttt{dplyr} & Grouped and flexible summaries \\
+\hline
+\end{tabular}
+\end{center}
+
+#### 2.8 Recommended R Functions Reference
+
+The following is a consolidated list of useful R functions for descriptive statistics.
+
+\begin{verbatim}
+# Central tendency
+mean()
+median()
+weighted.mean()
+DescTools::Mode()
+
+# Dispersion
+var()
+sd()
+IQR()
+mad()
+range()
+min()
+max()
+DescTools::CoefVar()
+
+# Position and distribution
+quantile()
+rank()
+fivenum()
+summary()
+psych::describe()
+skimr::skim()
+
+# Distribution shape
+moments::skewness()
+moments::kurtosis()
+
+# Frequency and categorical summaries
+table()
+prop.table()
+xtabs()
+addmargins()
+janitor::tabyl()
+
+# Grouped summaries
+dplyr::group_by()
+dplyr::summarise()
+dplyr::across()
+aggregate()
+tapply()
+
+# Weighted summaries
+weighted.mean()
+Hmisc::wtd.mean()
+\end{verbatim}
 
 ### 3. Distribution Analysis
 
@@ -25,6 +226,10 @@ output: pdf_document
 ### 9. Assessing Independence and Dependence
 
 ### 10. Assessing Relationships Between Variables
+
+### 11. Data Transformations and Preprocessing
+
+### 12. Sample Size and Data Adequacy
 
 
 # Comparing Groups (Means/Medians)
