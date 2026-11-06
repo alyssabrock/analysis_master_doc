@@ -4,31 +4,65 @@ subtitle: "Alyssa Brock and Avneet Virk"
 output: pdf_document
 ---
 
-**Data Exploration and Assessing Assumptions**
+# Data Exploration and Assessing Assumptions
+
+### 1. Data Structure and Initial Inspection
+
+### 2. Descriptive Statistics and Summary Measures
+
+### 3. Distribution Analysis
+
+### 4. Data Visualization and Exploratory Data Analysis
+
+### 5. Missing Data Analysis
+
+### 6. Outlier and Influential Observation Detection
+
+### 7. Assessing Distributional Assumptions
+
+### 8. Assessing Variance and Homogeneity Assumptions
+
+### 9. Assessing Independence and Dependence
+
+### 10. Assessing Relationships Between Variables
+
+
+# Comparing Groups (Means/Medians)
 
 
 
-**Comparing Means/Medians**
+# Relationships and Associations
 
 
 
-**Relationships and Associations**
+# Regression, Statistical Modeling and Prediction
 
 
 
-**Regression and Prediction**
+# Model Building, Diagnostics and Comparison
 
 
 
-**Model Building and Comparison**
-
-
-
-**Visualization/ Presentation of Results**
-
+# Visualization/ Presentation of Results
 
 One-Sample $t$-Test
 
     Use when:
 
 Wilcoxon Signed-Rank Test
+
+# Predictive Modeling and Machine Learning
+
+
+
+# Time Series and Longitudinal Analysis
+
+
+
+# Survival and Event-Time Analysis
+
+
+
+# Multivariate and Dimension Reduction Techniques
+
+
