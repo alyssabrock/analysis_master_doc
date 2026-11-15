@@ -80,15 +80,215 @@ Sample size affects statistical power, precision, and the stability of statistic
 | Dependence | Correlated observations reduce effective information |
 | Missing data | Can reduce precision and introduce bias |
 
+
 # Data Exploration and Descriptive Statistics
 
+Descriptive statistics summarize the central tendency, variability, distribution, and characteristics of a dataset. Exploratory data analysis (EDA) uses these summaries and visualizations to identify patterns, unusual observations, missing data, and potential data quality issues before formal analysis.
+
 ## Measures of Central Tendency
+
+Measures of central tendency describe the typical or central value of a distribution.
+
+| Measure | Definition | When to use |
+|---|---|---|
+| Mean | Arithmetic average of observations | Symmetric distributions; sensitive to outliers |
+| Median | Middle value of ordered observations | Skewed distributions or data with outliers |
+| Mode | Most frequently occurring value | Categorical or discrete data |
+| Trimmed mean | Mean after removing a proportion of extreme values | Reducing sensitivity to outliers |
+| Weighted mean | Mean accounting for observation-specific weights | Unequal observation importance or survey weights |
+
+**Key distinction:** The mean is sensitive to extreme values, while the median is more robust. For symmetric distributions, the mean and median are often similar.
+
+```{r}
+x <- c(2, 4, 5, 6, 8, 10, 30)
+
+mean(x)
+median(x)
+mean(x, trim = 0.1)
+weighted.mean(x, w = c(1, 1, 1, 1, 1, 1, 2))
+
+# Mode (no built-in statistical mode function)
+names(which.max(table(x)))
+```
+
+Note: `mode()` in base R returns the object's storage mode, not the statistical mode. The example above returns the most frequent value as text; tied modes require additional handling.
+
 ## Measures of Variability and Spread
+
+Measures of variability describe how dispersed observations are around their center.
+
+| Measure | Definition | Interpretation |
+|---|---|---|
+| Range | Maximum $-$ minimum | Total observed spread; sensitive to extremes |
+| Variance | Average squared deviation from the mean | Spread in squared units |
+| Standard deviation (SD) | Square root of variance | Typical scale of variation around the mean |
+| Interquartile range (IQR) | Q3 $-$ Q1 | Spread of the middle 50%; robust to outliers |
+| Median absolute deviation (MAD) | Median absolute distance from the median | Robust measure of dispersion |
+| Coefficient of variation (CV) | SD / mean | Relative variability; useful for positive, ratio-scale measurements |
+
+**Key distinction:** Standard deviation describes variability among observations, while standard error describes uncertainty in an estimated statistic (covered under Statistical Inference).
+
+```{r}
+x <- c(2, 4, 5, 6, 8, 10, 30)
+
+range(x)
+diff(range(x))
+var(x)
+sd(x)
+IQR(x)
+mad(x)
+sd(x) / mean(x)
+```
+
+**Note:** Base R's `var()` and `sd()` use the sample denominator \(n-1\). By default, `mad()` applies a scaling constant of approximately 1.4826 to estimate SD under normality.
+
 ## Quantiles and Percentiles
+
+Quantiles divide an ordered distribution into proportions. Percentiles express these positions on a 0–100 scale.
+
+| Measure | Definition |
+|---|---|
+| Quartiles | Divide data into four parts (Q1 = 25th, Q2 = 50th, Q3 = 75th percentile) |
+| Deciles | Divide data into ten parts |
+| Percentiles | Indicate the value at or below which a specified percentage of observations falls |
+| Five-number summary | Minimum, Q1, median, Q3, maximum |
+
+**Uses:** Comparing distributions, identifying extreme observations, establishing reference ranges, and summarizing skewed data.
+
+```{r}
+x <- mtcars$mpg
+
+quantile(x, probs = c(0.25, 0.50, 0.75, 0.90))
+fivenum(x)
+summary(x)
+```
+
+**Note:** Sample quantiles can differ slightly across software or calculation methods because multiple quantile definitions exist. R's `quantile()` uses type 7 by default.
+
 ## Exploring Distributions (Skewness, Kurtosis, Normality)
+
+Distribution shape affects the interpretation of summary statistics and the suitability of some statistical procedures.
+
+| Characteristic | Description |
+|---|---|
+| Symmetry | Similar distribution shape on either side of the center |
+| Right skew (positive) | Longer right tail; often mean > median |
+| Left skew (negative) | Longer left tail; often mean < median |
+| Skewness | Numerical measure of distribution asymmetry |
+| Kurtosis | Measure related to tail heaviness and extreme observations |
+| Normality | Approximate conformity to a symmetric, bell-shaped normal distribution |
+| Multimodality | Presence of multiple peaks, potentially indicating subgroups |
+
+For a normal distribution, skewness is 0 and kurtosis is 3 (excess kurtosis = 0).
+
+Common methods for evaluating distribution shape include histograms, density plots, Q–Q plots, and the Shapiro–Wilk normality test.
+
+```{r}
+x <- mtcars$mpg
+
+hist(x, main = "Distribution of MPG", xlab = "MPG")
+qqnorm(x)
+qqline(x)
+
+shapiro.test(x)
+```
+
+**Interpretation:** The Shapiro–Wilk test evaluates the null hypothesis that observations are normally distributed. A small p-value suggests evidence against normality, but a nonsignificant result does not establish normality.
+
+**Important:** Normality assumptions often concern residuals or paired differences, not necessarily the raw outcome or predictor variables. Visual diagnostics and the intended analysis should guide interpretation.
+
 ## Missing Data Patterns and Mechanisms (MCAR, MAR, MNAR)
+
+Missing observations can reduce precision and introduce bias. Understanding why data are missing helps determine an appropriate handling strategy.
+
+| Mechanism | Definition | Example |
+|---|---|---|
+| MCAR (Missing Completely at Random) | Missingness is unrelated to observed or unobserved data values | Random equipment failure |
+| MAR (Missing at Random) | Missingness can depend on observed variables but not missing values after conditioning on observed data | Income missingness related to recorded age |
+| MNAR (Missing Not at Random) | Missingness depends on unobserved values even after conditioning on observed data | High earners less likely to report their income, even after accounting for observed characteristics |
+
+**Important distinctions:**
+
+- MCAR is the strongest assumption; MAR is less restrictive.
+- MAR does not mean missing values occur randomly without explanation.
+- Missingness mechanisms generally cannot be established from observed data alone.
+- Complete-case analysis can reduce power and introduce bias, depending on the missingness mechanism and analysis.
+
+```{r}
+# Count and proportion missing by variable
+colSums(is.na(airquality))
+colMeans(is.na(airquality))
+
+# Number of complete observations
+sum(complete.cases(airquality))
+```
+
+Methods for handling missing values, including multiple imputation and inverse probability weighting, are covered under Specialized Statistical Methods.
+
 ## Data Transformations and Standardization
+
+Transformations change a variable's scale or distribution to improve interpretability, reduce skewness, or support modeling.
+
+| Method | Purpose | R function |
+|---|---|---|
+| Log transformation | Compress large values; often reduce right skew | `log(x)` |
+| Square-root transformation | Compress larger values; sometimes useful for counts | `sqrt(x)` |
+| Box–Cox transformation | Estimate a power transformation for positive values | `MASS::boxcox()` |
+| Yeo–Johnson transformation | Power transformation allowing zero and negative values | `bestNormalize::yeojohnson()` |
+| Standardization (z-score) | Center to mean 0 and scale to SD 1 | `scale(x)` |
+| Min-max scaling | Rescale to a specified range, usually [0, 1] | `(x - min(x)) / (max(x) - min(x))` |
+| Centering | Subtract the mean without changing SD | `scale(x, scale = FALSE)` |
+
+**Key distinctions:**
+
+- Standardization changes scale but does not make a variable normally distributed.
+- Log transformations require positive inputs; `log1p(x)` computes log(1 + x) and can accommodate nonnegative values.
+- Transformations affect coefficient interpretation and may change the estimand.
+- For predictive modeling, scaling parameters must be estimated on training data and applied unchanged to validation or test data to avoid leakage.
+
+```{r}
+x <- mtcars$mpg
+
+log(x)
+as.numeric(scale(x))
+(x - min(x)) / (max(x) - min(x))
+```
+
 ## Exploratory Data Analysis (EDA)
+
+EDA is the process of examining data before formal statistical modeling to understand their structure, identify quality issues, and generate hypotheses.
+
+### Common EDA tasks
+
+| Task | Purpose |
+|---|---|
+| Inspect structure | Verify variable types, dimensions, and coding |
+| Summarize variables | Examine central tendency, spread, and frequencies |
+| Assess missingness | Identify missing observations and patterns |
+| Examine distributions | Identify skewness, unusual values, and multimodality |
+| Identify outliers | Detect potentially influential or erroneous observations |
+| Explore relationships | Examine associations between variables |
+| Compare groups | Identify differences in distributions or summaries |
+| Check data quality | Detect duplicates, invalid values, and inconsistent coding |
+
+```{r}
+# Basic EDA with a built-in dataset
+str(mtcars)
+dim(mtcars)
+head(mtcars)
+summary(mtcars)
+colSums(is.na(mtcars))
+
+# Examine relationships
+cor(mtcars[, c("mpg", "wt", "hp")])
+```
+
+**Important considerations:**
+
+- Outliers should be investigated rather than automatically removed.
+- Correlation does not imply causation.
+- Patterns discovered during EDA are exploratory and may require confirmation using separate data or appropriate validation.
+- EDA should inform subsequent modeling without allowing repeated data-driven decisions to be mistaken for prespecified hypothesis tests.
 
 \newpage
 
