@@ -1,0 +1,195 @@
+---
+title: "Potential Outline "
+subtitle: "Alyssa Brock and Avneet Virk"
+output: pdf_document
+---
+
+# Statistical Analysis Decision Guide
+
+## Choosing an Analysis Based on the Research Question
+## Identifying Variable Types
+## Independent vs. Paired/Repeated Observations
+## Parametric vs. Nonparametric Methods
+## Assumptions and Sample Size Considerations
+## Statistical Significance vs. Practical Significance
+
+# Data Exploration and Descriptive Statistics
+
+## Data Types and Structures
+## Measures of Central Tendency
+## Measures of Variability and Spread
+## Quantiles, Percentiles, and Five-Number Summary
+## Frequency Tables and Cross-Tabulations
+## Exploring Distributions (Skewness, Kurtosis, Normality)
+## Missing Data Patterns and Mechanisms (MCAR, MAR, MNAR)
+## Outlier Detection and Influence
+## Data Transformations and Standardization
+## Exploratory Data Analysis (EDA)
+
+\newpage
+
+# Probability, Sampling, and Statistical Inference
+
+## Probability Rules and Conditional Probability
+## Common Probability Distributions
+## Sampling Methods and Sampling Bias
+## Sampling Distributions and Central Limit Theorem
+## Standard Errors and Confidence Intervals
+## Hypothesis Testing and p-Values
+## Type I and Type II Errors, Power, and Sample Size
+## Effect Sizes and Practical Significance
+## Multiple Testing Corrections
+## Bootstrap and Permutation Methods
+
+# Comparing Groups
+
+## One-Sample Tests (t-Test, Wilcoxon Signed-Rank)
+## Independent Two-Sample Tests (Student's/Welch's t-Test, Mann–Whitney U)
+## Paired Two-Sample Tests (Paired t-Test, Wilcoxon Signed-Rank)
+## One-Way ANOVA and Welch's ANOVA
+## Repeated-Measures ANOVA
+## Nonparametric Multi-Group Tests (Kruskal–Wallis, Friedman)
+## Post-Hoc Tests and Multiple Comparisons
+## Effect Sizes for Group Comparisons
+## Equivalence and Noninferiority Testing
+
+\newpage
+
+# Relationships and Associations
+
+## Covariance and Correlation
+## Pearson, Spearman, and Kendall Correlations
+## Partial and Semi-Partial Correlations
+## Contingency Tables and Chi-Square Tests
+## Fisher's Exact Test
+## Measures of Categorical Association (Phi, Cramér's V)
+## Odds Ratios, Risk Ratios, and Risk Differences
+## Stratified Associations and Mantel–Haenszel Methods
+## Confounding and Effect Modification
+
+# Regression and Statistical Modeling
+
+## Simple and Multiple Linear Regression
+## Polynomial and Interaction Terms
+## Logistic Regression (Binary, Multinomial, Ordinal)
+## Generalized Linear Models (GLMs)
+## Poisson and Negative Binomial Regression
+## Zero-Inflated and Hurdle Models
+## Mixed-Effects Models (Fixed vs. Random Effects)
+## Generalized Additive Models (GAMs)
+## Quantile and Robust Regression
+## Regression Coefficient Interpretation
+
+\newpage
+
+# Model Building, Diagnostics, and Comparison
+
+## Model Assumptions and Residual Diagnostics
+## Multicollinearity and Variance Inflation Factors (VIF)
+## Outliers, Leverage, and Influential Observations
+## Variable Selection and Feature Engineering
+## Regularization (Ridge, LASSO, Elastic Net)
+## Model Fit (R², Adjusted R², Deviance, Log-Likelihood)
+## Model Comparison (AIC, BIC, Likelihood Ratio Tests)
+## Cross-Validation and Train/Test Splits
+## Overfitting, Underfitting, and Bias-Variance Tradeoff
+## Model Calibration and Validation
+
+# Experimental Design and Causal Inference
+
+## Observational vs. Experimental Studies
+## Randomization, Blinding, and Control Groups
+## Blocking, Stratification, and Factorial Designs
+## A/B Testing and Randomized Controlled Trials
+## Confounding, Selection Bias, and Collider Bias
+## Causal Diagrams (DAGs)
+## Potential Outcomes and Causal Estimands
+## Propensity Scores, Matching, and Weighting
+## Difference-in-Differences and Interrupted Time Series
+## Instrumental Variables and Regression Discontinuity
+
+\newpage
+
+# Predictive Modeling and Machine Learning
+
+## Supervised vs. Unsupervised Learning
+## Classification vs. Regression Problems
+## Decision Trees and Random Forests
+## Gradient Boosting (XGBoost, LightGBM)
+## k-Nearest Neighbors and Support Vector Machines
+## Naive Bayes and Neural Networks
+## Clustering (k-Means, Hierarchical, DBSCAN)
+## Hyperparameter Tuning and Resampling
+## Classification Metrics (Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC)
+## Regression Metrics (RMSE, MAE, R²)
+## Feature Importance and Model Interpretability
+
+# Time Series and Longitudinal Analysis
+
+## Time Series Components (Trend, Seasonality, Cycles)
+## Stationarity and Differencing
+## Autocorrelation and Partial Autocorrelation
+## AR, MA, ARMA, and ARIMA Models
+## Exponential Smoothing and Forecasting
+## Time Series Regression and Lagged Predictors
+## Forecast Evaluation and Rolling Validation
+## Repeated Measures and Longitudinal Data
+## Generalized Estimating Equations (GEE)
+## Longitudinal Mixed-Effects Models
+
+\newpage
+
+# Survival and Event-Time Analysis
+
+## Survival Data and Right-Censoring
+## Survival and Hazard Functions
+## Kaplan–Meier Estimation
+## Log-Rank Tests
+## Cox Proportional Hazards Regression
+## Proportional Hazards Assumption
+## Parametric Survival Models (Weibull, Exponential)
+## Accelerated Failure Time (AFT) Models
+## Time-Varying Covariates
+## Competing Risks
+
+# Multivariate and Dimension Reduction Techniques
+
+## Multivariate Data Exploration
+## Principal Component Analysis (PCA)
+## Exploratory and Confirmatory Factor Analysis
+## MANOVA and MANCOVA
+## Linear and Quadratic Discriminant Analysis
+## Canonical Correlation Analysis
+## Correspondence Analysis
+## Multidimensional Scaling (MDS)
+## t-SNE and UMAP
+## Cluster Validation and Interpretation
+
+\newpage
+
+# Specialized Statistical Methods
+
+## Bayesian Inference and Bayesian Regression
+## Meta-Analysis and Systematic Reviews
+## Mediation and Moderation Analysis
+## Missing Data Methods (Multiple Imputation, IPW)
+## Robust and Nonparametric Statistics
+## Nonparametric Smoothing and Kernel Methods
+## Spatial Statistics and Spatial Regression
+## Survey Sampling, Weights, and Complex Survey Designs
+## Measurement Reliability and Agreement
+## Resampling and Monte Carlo Simulation
+
+# Visualization and Presentation of Results
+
+## Choosing Visualizations by Data Type and Research Question
+## Distribution Plots (Histograms, Density, Boxplots, Violin Plots)
+## Relationship Plots (Scatterplots, Correlation Heatmaps)
+## Group Comparison Plots
+## Regression and Diagnostic Plots
+## Time Series and Survival Plots
+## Effect Sizes and Confidence Interval Plots
+## Model Performance Visualizations
+## Tables and Statistical Reporting
+## Communicating Uncertainty and Practical Significance
+## Reproducible Reporting with R Markdown and ggplot2
