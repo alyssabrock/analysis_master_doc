@@ -1,28 +1,92 @@
 ---
-title: "Potential Outline "
+title: "Potential Outline"
 subtitle: "Alyssa Brock and Avneet Virk"
 output: pdf_document
 ---
 
 # Statistical Analysis Decision Guide
 
+Statistical methods should be selected based on the research question, variable types, study design, and underlying assumptions.
+
+Before selecting an analysis, consider:
+
+- **Research objective:** Description, comparison, association, prediction, or causal inference?
+- **Outcome variable:** Continuous, categorical, ordinal, count, or time-to-event?
+- **Predictor variables:** Continuous, categorical, or both?
+- **Study design:** Independent, paired, repeated, or clustered observations?
+- **Assumptions:** Are the method's distributional and independence assumptions reasonable?
+- **Sample size:** Is there sufficient information for reliable estimates and adequate power?
+
 ## Choosing an Analysis Based on the Research Question
-## Identifying Variable Types
-## Independent vs. Paired/Repeated Observations
+
+The research objective and data structure determine which statistical methods are appropriate.
+
+| Research objective | Example question | Common methods |
+|---|---|---|
+| Describe data | What is the average income? | Descriptive statistics |
+| Compare groups | Do treatment groups differ? | t-test, ANOVA, Wilcoxon, Kruskal–Wallis |
+| Test associations | Is smoking associated with disease? | Chi-square, Fisher's exact test |
+| Examine relationships | Is age related to blood pressure? | Correlation, regression |
+| Explain variation | Which factors are associated with salary? | Multiple regression, GLMs |
+| Predict outcomes | Which customers will churn? | Logistic regression, random forests |
+| Estimate causal effects | Did a policy reduce unemployment? | RCTs, difference-in-differences, IV |
+| Analyze time trends | What will sales be next month? | ARIMA, exponential smoothing |
+| Analyze event times | How long until an event occurs? | Kaplan–Meier, Cox regression |
+| Identify structure | Are there distinct customer groups? | Clustering, PCA |
+
+\newpage
+
+### Quick Method Selection by Outcome and Design
+
+| Outcome | Study design / question | Common method |
+|---|---|---|
+| Continuous | One sample vs. reference value | One-sample t-test |
+| Continuous | Two independent groups | Welch's t-test |
+| Continuous | Two paired measurements | Paired t-test |
+| Continuous | 3+ independent groups | ANOVA, Welch's ANOVA |
+| Continuous | 3+ repeated measurements | Repeated-measures ANOVA, mixed models |
+| Continuous | Multiple predictors | Linear regression |
+| Binary | Association between categorical variables | Chi-square, Fisher's exact test |
+| Binary | Multiple predictors | Logistic regression |
+| Nominal categorical | Multiple outcome categories | Multinomial logistic regression |
+| Ordinal | Ordered categorical outcome | Ordinal logistic regression |
+| Count | Number of events | Poisson, negative binomial regression |
+| Time-to-event | Censored event times | Survival analysis |
+| Repeated / clustered | Correlated observations | Mixed-effects models, GEE |
+| Time series | Temporally dependent observations | ARIMA, time series regression |
+
 ## Parametric vs. Nonparametric Methods
-## Assumptions and Sample Size Considerations
-## Statistical Significance vs. Practical Significance
+
+**Parametric methods** specify a statistical model using a finite set of parameters, often with distributional assumptions. **Nonparametric methods** make fewer or more flexible assumptions about the population distribution.
+
+| Consideration | Parametric | Nonparametric |
+|---|---|---|
+| Common methods | t-test, ANOVA, Pearson correlation | Wilcoxon, Kruskal–Wallis, Spearman |
+| Data types | Often continuous; depends on model | Often ordinal or continuous |
+
+## Sample Size Considerations
+
+Sample size affects statistical power, precision, and the stability of statistical estimates.
+
+| Factor | Impact |
+|---|---|
+| Sample size | Larger samples generally improve precision and power |
+| Effect size | Smaller effects generally require larger samples |
+| Variability | Greater variability typically reduces precision |
+| Significance level | Lower alpha generally requires larger samples |
+| Desired power | Higher power generally requires larger samples |
+| Group imbalance | Unequal group sizes can reduce efficiency |
+| Model complexity | More parameters generally require more information |
+| Dependence | Correlated observations reduce effective information |
+| Missing data | Can reduce precision and introduce bias |
 
 # Data Exploration and Descriptive Statistics
 
-## Data Types and Structures
 ## Measures of Central Tendency
 ## Measures of Variability and Spread
-## Quantiles, Percentiles, and Five-Number Summary
-## Frequency Tables and Cross-Tabulations
+## Quantiles and Percentiles
 ## Exploring Distributions (Skewness, Kurtosis, Normality)
 ## Missing Data Patterns and Mechanisms (MCAR, MAR, MNAR)
-## Outlier Detection and Influence
 ## Data Transformations and Standardization
 ## Exploratory Data Analysis (EDA)
 
@@ -30,10 +94,6 @@ output: pdf_document
 
 # Probability, Sampling, and Statistical Inference
 
-## Probability Rules and Conditional Probability
-## Common Probability Distributions
-## Sampling Methods and Sampling Bias
-## Sampling Distributions and Central Limit Theorem
 ## Standard Errors and Confidence Intervals
 ## Hypothesis Testing and p-Values
 ## Type I and Type II Errors, Power, and Sample Size
@@ -97,8 +157,6 @@ output: pdf_document
 
 # Experimental Design and Causal Inference
 
-## Observational vs. Experimental Studies
-## Randomization, Blinding, and Control Groups
 ## Blocking, Stratification, and Factorial Designs
 ## A/B Testing and Randomized Controlled Trials
 ## Confounding, Selection Bias, and Collider Bias
@@ -170,19 +228,13 @@ output: pdf_document
 # Specialized Statistical Methods
 
 ## Bayesian Inference and Bayesian Regression
-## Meta-Analysis and Systematic Reviews
-## Mediation and Moderation Analysis
 ## Missing Data Methods (Multiple Imputation, IPW)
-## Robust and Nonparametric Statistics
-## Nonparametric Smoothing and Kernel Methods
 ## Spatial Statistics and Spatial Regression
 ## Survey Sampling, Weights, and Complex Survey Designs
-## Measurement Reliability and Agreement
 ## Resampling and Monte Carlo Simulation
 
 # Visualization and Presentation of Results
 
-## Choosing Visualizations by Data Type and Research Question
 ## Distribution Plots (Histograms, Density, Boxplots, Violin Plots)
 ## Relationship Plots (Scatterplots, Correlation Heatmaps)
 ## Group Comparison Plots
@@ -190,6 +242,3 @@ output: pdf_document
 ## Time Series and Survival Plots
 ## Effect Sizes and Confidence Interval Plots
 ## Model Performance Visualizations
-## Tables and Statistical Reporting
-## Communicating Uncertainty and Practical Significance
-## Reproducible Reporting with R Markdown and ggplot2

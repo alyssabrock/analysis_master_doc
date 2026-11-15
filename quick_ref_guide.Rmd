@@ -1,0 +1,1125 @@
+---
+title: "Statistical Interview Quick Reference"
+output: pdf_document
+---
+
+## 1. Fundamental Statistical Concepts
+
+### Population vs. Sample
+
+- **Population:** The entire group of individuals or observations of interest.
+- **Sample:** A subset of the population used to make inferences about the larger group.
+- **Key distinction:** Samples are used to estimate unknown population characteristics.
+- **Interview tip:** Explain how representative sampling affects generalizability.
+
+### Parameter vs. Statistic
+
+- **Parameter:** A numerical characteristic of a population (e.g., population mean $\mu$).
+- **Statistic:** A numerical characteristic calculated from a sample (e.g., sample mean $\bar{x}$).
+- Statistics are used to estimate population parameters.
+- **Example:** The average height of all U.S. adults is a parameter; the average height of 500 sampled adults is a statistic.
+
+### Descriptive vs. Inferential Statistics
+
+- **Descriptive statistics:** Summarize observed data using means, medians, standard deviations, frequencies, and visualizations.
+- **Inferential statistics:** Use sample data to estimate population characteristics or test hypotheses.
+- **Example:** Reporting the average income in a dataset is descriptive; estimating the population average income with a confidence interval is inferential.
+
+### Bias vs. Variance
+
+- **Bias:** Systematic deviation of an estimator's expected value from the true parameter.
+- **Variance:** How much an estimator varies across repeated samples.
+- High bias can lead to systematic errors; high variance can lead to unstable estimates.
+- **Interview tip:** The bias-variance tradeoff is particularly relevant when discussing predictive modeling.
+
+### Accuracy vs. Precision
+
+- **Accuracy:** How close an estimate or measurement is to the true value.
+- **Precision:** How consistent repeated estimates or measurements are.
+- A method may produce highly precise but systematically biased results.
+- **Example:** A scale that consistently reports weights 5 pounds too high is precise but inaccurate.
+
+### Standard Deviation vs. Standard Error
+
+- **Standard deviation (SD):** Measures variability among individual observations.
+- **Standard error (SE):** Measures sampling variability of an estimator.
+- For a sample mean with independent observations:
+
+$$
+SE(\bar{x}) = \frac{s}{\sqrt{n}}
+$$
+
+- As sample size increases, the standard error generally decreases.
+- **Interview tip:** SD describes the spread of data; SE describes the uncertainty of an estimate.
+
+### Central Limit Theorem vs. Law of Large Numbers
+
+- **Central Limit Theorem (CLT):** Under appropriate conditions, the sampling distribution of a standardized sample mean approaches a normal distribution as sample size increases.
+- **Law of Large Numbers (LLN):** Under appropriate conditions, the sample mean converges to the population mean as sample size increases.
+- **Key distinction:** The LLN concerns convergence to the true value; the CLT describes the distribution of sampling fluctuations.
+- **Interview tip:** The CLT does not imply that the original data become normally distributed.
+
+### Correlation vs. Causation
+
+- **Correlation:** Two variables exhibit a statistical association.
+- **Causation:** Changing one variable produces a change in another.
+- Correlation may arise from confounding, reverse causality, selection effects, or coincidence.
+- **Interview tip:** Causal conclusions require appropriate study design and assumptions; statistical significance alone is insufficient.
+
+---
+
+## 2. Hypothesis Testing and Statistical Inference
+
+### Null vs. Alternative Hypothesis
+
+- **Null hypothesis ($H_0$):** Typically represents no effect, no difference, or a specified parameter value.
+- **Alternative hypothesis ($H_A$):** Represents the effect or difference being investigated.
+- **Example:** $H_0: \mu_1 = \mu_2$ versus $H_A: \mu_1 \neq \mu_2$.
+- **Interview tip:** Failing to reject $H_0$ does not establish that $H_0$ is true.
+
+### One-Tailed vs. Two-Tailed Tests
+
+- **One-tailed:** Tests for a difference in a prespecified direction.
+- **Two-tailed:** Tests for a difference in either direction.
+- A one-tailed test can provide greater power for the specified direction but cannot support a conclusion in the opposite direction using that same rejection rule.
+- The direction should be selected before examining the results.
+
+### Type I vs. Type II Errors
+
+- **Type I error (false positive):** Rejecting a true null hypothesis.
+- **Type II error (false negative):** Failing to reject a false null hypothesis.
+- $\alpha$ is the probability of a Type I error under the specified null model.
+- $\beta$ is the probability of a Type II error at a particular alternative.
+- **Power:** $1-\beta$.
+
+### Statistical Power and Sample Size
+
+- Statistical power is the probability of rejecting the null hypothesis when a specified alternative is true.
+- Power generally increases with larger sample sizes, larger effect sizes, and lower variability.
+- Common planning targets include 80% or 90% power.
+- **Interview tip:** Sample size should be justified using the effect of interest, variability, desired power, and significance level.
+
+### p-Values: What They Do and Don't Mean
+
+- A p-value measures how incompatible the observed data (or more extreme results) are with the specified null hypothesis and statistical model.
+- A small p-value provides evidence against $H_0$ under the model assumptions.
+- A p-value is **not** the probability that the null hypothesis is true.
+- A p-value does not measure effect size, clinical importance, or the probability that a result will replicate.
+- **Interview tip:** Always interpret p-values alongside effect sizes and confidence intervals.
+
+### Confidence Intervals vs. Prediction Intervals
+
+- **Confidence interval (CI):** Quantifies uncertainty about a population parameter or expected response.
+- **Prediction interval (PI):** Quantifies uncertainty about a future individual observation.
+- Prediction intervals are generally wider because they incorporate both parameter uncertainty and individual-level variability.
+- A 95% frequentist confidence procedure produces intervals containing the fixed true parameter in 95% of repeated samples under its assumptions.
+
+### Statistical Significance vs. Practical Significance
+
+- **Statistical significance:** Evidence against a null hypothesis according to a specified threshold.
+- **Practical significance:** Whether an effect is meaningful in the application.
+- Large samples can produce statistically significant results for very small effects.
+- **Interview tip:** Report estimated effects, uncertainty, and domain-specific relevance rather than relying only on p-values.
+
+### Multiple Comparisons and False Discovery Rate
+
+- Performing many hypothesis tests increases the probability of false positives.
+- **Bonferroni correction:** Controls the family-wise error rate, often conservatively.
+- **Holm correction:** A stepwise procedure controlling family-wise error rate.
+- **Benjamini–Hochberg:** Controls the false discovery rate under appropriate dependence assumptions.
+- **Family-wise error rate:** Probability of at least one false rejection.
+- **False discovery rate:** Expected proportion of false rejections among all rejections, with the conventional zero-rejection definition.
+
+### Frequentist vs. Bayesian Inference
+
+- **Frequentist:** Parameters are treated as fixed; probability describes random data and procedures.
+- **Bayesian:** Uncertainty about parameters is represented through probability distributions.
+- Bayesian inference combines prior information with observed data to produce a posterior distribution.
+- **Interview tip:** A Bayesian 95% credible interval can be interpreted as containing 95% posterior probability for the parameter, conditional on the model and prior.
+
+---
+
+## 3. Choosing the Appropriate Statistical Test
+
+### Parametric vs. Nonparametric Tests
+
+- **Parametric tests:** Depend on a specified statistical model or distributional form, typically involving a finite set of parameters.
+- **Nonparametric methods:** Make fewer or different distributional assumptions.
+- Examples include t-tests versus rank-based Wilcoxon tests.
+- **Interview tip:** Nonparametric does not mean assumption-free, and rank-based tests do not always test differences in medians.
+
+### Independent vs. Paired Samples
+
+- **Independent samples:** Observations in one group are independent of observations in another.
+- **Paired samples:** Observations are matched or repeatedly measured on the same units.
+- Examples: Different patients in two groups versus blood pressure measured before and after treatment in the same patients.
+- Paired analyses account for within-pair dependence.
+
+### Student's t-Test vs. Welch's t-Test
+
+- Both compare means of two independent groups.
+- **Student's pooled two-sample t-test:** Assumes equal population variances.
+- **Welch's t-test:** Allows unequal population variances.
+- Welch's test is generally a strong default for two independent groups.
+- In R, `t.test()` uses Welch's test by default for independent groups.
+
+### t-Test vs. ANOVA
+
+- **t-test:** Commonly compares two means.
+- **ANOVA:** Tests mean differences across multiple groups or factor levels.
+- A conventional two-group one-way ANOVA is equivalent to the equal-variance two-sample t-test for a two-sided hypothesis.
+- For multiple groups, significant ANOVA results may be followed by planned contrasts or post-hoc comparisons.
+
+### ANOVA vs. Kruskal–Wallis
+
+- **ANOVA:** Tests differences in population means under a statistical model.
+- **Kruskal–Wallis:** Rank-based test for differences among independent group distributions.
+- Kruskal–Wallis can be interpreted as a location comparison under additional assumptions about distributional shapes.
+- **Interview tip:** It is not automatically a direct test of medians.
+
+### Pearson vs. Spearman vs. Kendall Correlation
+
+- **Pearson:** Measures linear association between numeric variables.
+- **Spearman:** Measures monotonic association using ranks.
+- **Kendall:** Measures rank association using concordant and discordant pairs.
+- Spearman and Kendall are useful for ordinal variables or monotonic relationships not well described by Pearson correlation.
+- **Interview tip:** Correlation coefficients do not establish causation.
+
+### Chi-Square vs. Fisher's Exact Test
+
+- Both can assess association between categorical variables.
+- **Chi-square:** Uses a large-sample approximation.
+- **Fisher's exact test:** Provides an exact conditional test, commonly useful for small 2-by-2 tables or sparse counts.
+- **Interview tip:** Examine expected cell counts and study design when choosing a test.
+
+### When to Use Regression Instead of a Group Comparison
+
+Regression is particularly useful when:
+- Adjusting for potential confounders.
+- Including multiple predictors.
+- Modeling continuous predictors.
+- Evaluating interactions or nonlinear relationships.
+- Generating predictions.
+
+A two-group comparison can often be expressed as a regression model using a group indicator.
+
+### What to Do When Statistical Assumptions Are Violated
+
+1. Determine which assumption is violated and whether the violation materially affects inference.
+2. Inspect plots and diagnostics rather than relying only on formal tests.
+3. Consider transformations, robust standard errors, alternative models, or resampling.
+4. Account for clustering, pairing, or repeated measures when relevant.
+5. Evaluate whether the replacement method answers the same scientific question.
+
+**Interview tip:** Choosing a different test should be driven by the research question and data-generating process, not simply by a normality test p-value.
+
+---
+
+## 4. Regression and Model Interpretation
+
+### Linear vs. Logistic Regression
+
+- **Linear regression:** Commonly models the conditional mean of a continuous outcome.
+- **Logistic regression:** Models the log-odds of a binary outcome.
+- Linear regression coefficients describe expected changes in the outcome.
+- Exponentiated logistic regression coefficients represent odds ratios.
+
+### Correlation vs. Regression
+
+- **Correlation:** Symmetric measure of association between variables.
+- **Regression:** Models an outcome conditional on one or more predictors.
+- Correlation is unitless; regression coefficients generally depend on measurement units.
+- Regression can include covariates, interactions, and nonlinear terms.
+
+### R-Squared vs. Adjusted R-Squared
+
+- **$R^2$:** Proportion of outcome variability explained by a conventional linear regression model relative to an intercept-only baseline.
+- **Adjusted $R^2$:** Includes a penalty for adding predictors relative to sample size.
+- Adding predictors cannot reduce ordinary in-sample $R^2$ in nested OLS models.
+- Adjusted $R^2$ can decrease when additional predictors contribute little.
+- Neither metric guarantees good out-of-sample prediction.
+
+### Odds vs. Probability vs. Odds Ratio
+
+- **Probability:** $p$, between 0 and 1.
+- **Odds:** $p/(1-p)$.
+- **Odds ratio:** Ratio of odds in two groups or conditions.
+- An OR of 2 means twice the odds, not necessarily twice the probability.
+- **Interview tip:** Odds ratios and risk ratios differ substantially when an outcome is common.
+
+### Confounding vs. Interaction
+
+- **Confounding:** A distortion of an association due to other variables or selection processes.
+- **Interaction/effect modification:** The relationship between a predictor and an outcome differs according to another variable.
+- Confounding may require adjustment for valid interpretation.
+- Interaction may be of direct scientific interest.
+- **Interview tip:** Interaction is scale-dependent; an interaction may be present on one effect scale but absent on another.
+
+### Fixed Effects vs. Random Effects
+
+- **Fixed-effect coefficients:** Represent parameters associated with specified predictor effects.
+- **Random effects:** Model variation across groups or units using a probability distribution.
+- Mixed-effects models combine fixed-effect predictors and random-effect components.
+- Example: Patient measurements nested within hospitals.
+- The term "fixed effects" has additional uses in panel-data econometrics.
+
+### Multicollinearity and VIF
+
+- Multicollinearity occurs when predictors contain overlapping linear information.
+- It can increase coefficient uncertainty and make individual estimates unstable.
+- The variance inflation factor (VIF) measures inflation in coefficient variance due to collinearity with other predictors.
+- Large VIFs may warrant investigation, but no universal cutoff applies.
+- Possible responses include removing redundant predictors, combining variables, or applying regularization.
+
+### Heteroskedasticity vs. Homoskedasticity
+
+- **Homoskedasticity:** Constant conditional error variance.
+- **Heteroskedasticity:** Error variance changes across observations or predictor values.
+- Heteroskedasticity can invalidate conventional OLS standard errors even when coefficient estimates remain consistent under appropriate exogeneity assumptions.
+- Consider heteroskedasticity-robust standard errors or alternative variance models.
+
+### Interpreting Regression Coefficients and Confidence Intervals
+
+- **Linear regression:** A one-unit increase in a predictor corresponds to the estimated change in expected outcome, holding other included variables constant.
+- **Logistic regression:** Exponentiating the coefficient gives a conditional odds ratio.
+- **Interaction models:** Main-effect coefficients generally represent effects at reference values of interacting predictors.
+- Confidence intervals communicate uncertainty in coefficient estimates.
+
+### Why Association Does Not Imply Causation
+
+- Regression adjustment alone cannot guarantee causal identification.
+- Important considerations include confounding, temporal order, selection bias, measurement error, and model specification.
+- Causal interpretation requires a defensible study design and assumptions.
+
+---
+
+## 5. Model Building and Evaluation
+
+### Overfitting vs. Underfitting
+
+- **Overfitting:** A model captures noise or sample-specific patterns, harming generalization.
+- **Underfitting:** A model is too restrictive to capture important relationships.
+- Overfitting often appears as substantially better training performance than validation performance.
+- Underfitting may result in poor performance on both datasets.
+
+### Bias-Variance Tradeoff
+
+- Flexible models can reduce approximation bias but may increase estimation variance.
+- Simpler models may have higher bias but greater stability.
+- The goal in predictive modeling is strong performance on new data, not necessarily the best training fit.
+
+### Training vs. Validation vs. Test Data
+
+- **Training set:** Used to fit model parameters.
+- **Validation set:** Used to compare models and tune hyperparameters.
+- **Test set:** Used for final evaluation on previously untouched data.
+- Cross-validation may replace a single validation split.
+- **Interview tip:** Test data should not influence feature selection or tuning.
+
+### Cross-Validation and Data Leakage
+
+- Cross-validation estimates model performance across repeated train/assessment splits.
+- **k-fold CV:** Divide data into $k$ folds and evaluate each fold using models trained on the others.
+- **Data leakage:** Information unavailable at prediction time improperly influences model training or evaluation.
+- Preprocessing, imputation, feature selection, and tuning should occur within training folds when they learn from data.
+- Use grouped or time-ordered validation for dependent observations.
+
+### AIC vs. BIC vs. Adjusted R-Squared
+
+- **AIC:** Model selection criterion balancing likelihood-based fit with model complexity.
+- **BIC:** Similar criterion with a penalty that increases with sample size.
+- **Adjusted $R^2$:** Penalized measure of explained variability in ordinary linear regression.
+- Lower AIC/BIC values are preferred among appropriately comparable fitted models.
+- **Interview tip:** These metrics do not substitute for external validation or assessment of scientific relevance.
+
+### LASSO vs. Ridge vs. Elastic Net
+
+- **Ridge regression:** Uses an L2 penalty; shrinks coefficients but typically does not set them exactly to zero.
+- **LASSO:** Uses an L1 penalty; can set coefficients exactly to zero.
+- **Elastic Net:** Combines L1 and L2 penalties.
+- Regularization can reduce overfitting and improve prediction.
+- Predictors are commonly standardized before penalized regression.
+
+### Prediction vs. Inference
+
+- **Prediction:** Estimate outcomes accurately for new observations.
+- **Inference:** Estimate and interpret relationships, uncertainty, or population parameters.
+- A predictive model may prioritize accuracy over interpretability.
+- An inferential model may prioritize a well-defined estimand and valid uncertainty quantification.
+
+### Calibration vs. Discrimination
+
+- **Discrimination:** Ability to distinguish observations with different outcomes.
+- **Calibration:** Agreement between predicted probabilities and observed outcome frequencies.
+- A classifier can have excellent discrimination but poorly calibrated probabilities.
+- ROC-AUC evaluates ranking/discrimination, not calibration.
+
+### Model Interpretability vs. Predictive Performance
+
+- Simple models may be easier to explain and audit.
+- More complex models may capture nonlinearities and interactions.
+- Increased complexity does not guarantee better prediction.
+- Selection depends on goals, data, interpretability requirements, and validated performance.
+
+---
+
+## 6. Machine Learning and Prediction
+
+### Supervised vs. Unsupervised Learning
+
+- **Supervised learning:** Uses labeled outcomes to learn relationships.
+- Examples: Regression and classification.
+- **Unsupervised learning:** Examines structure without a designated outcome.
+- Examples: Clustering and dimensionality reduction.
+
+### Classification vs. Regression
+
+- **Classification:** Predicts categories or class probabilities.
+- **Regression:** Predicts numeric outcomes.
+- Evaluation metrics differ according to outcome type and prediction objective.
+
+### Random Forest vs. Gradient Boosting
+
+- **Random forest:** Combines many decision trees generally trained independently using randomized samples and predictors.
+- **Gradient boosting:** Builds models sequentially to improve a specified loss function.
+- Random forests often require less tuning.
+- Boosting can provide strong predictive performance but may be sensitive to hyperparameter choices.
+
+### Bagging vs. Boosting
+
+- **Bagging:** Trains models on resampled datasets and aggregates their predictions, often reducing variance.
+- **Boosting:** Sequentially adds learners to improve the overall predictive model.
+- Both are ensemble techniques but use different training strategies.
+
+### Parametric vs. Nonparametric Models
+
+- **Parametric:** Assumes a model structure characterized by a fixed-dimensional parameter vector.
+- **Nonparametric:** Allows model complexity or structure to adapt more flexibly to the data.
+- Examples: Linear regression is parametric; many tree-based and kernel methods are nonparametric.
+- Nonparametric models can still make important assumptions.
+
+### Accuracy vs. Precision vs. Recall vs. F1
+
+- **Accuracy:** Proportion of all predictions classified correctly.
+- **Precision (PPV):** Proportion of predicted positives that are true positives.
+- **Recall (sensitivity):** Proportion of actual positives correctly identified.
+- **F1:** Harmonic mean of precision and recall.
+- **Interview tip:** Accuracy can be misleading when classes are highly imbalanced.
+
+### ROC-AUC vs. PR-AUC
+
+- **ROC-AUC:** Summarizes discrimination across thresholds using true positive rate and false positive rate.
+- **PR-AUC:** Summarizes the precision-recall tradeoff across thresholds.
+- PR-AUC can be especially informative for rare positive classes.
+- PR-AUC depends on outcome prevalence, making comparisons across populations more complicated.
+
+### Sensitivity vs. Specificity
+
+- **Sensitivity:** Probability of testing positive among true positive cases.
+- **Specificity:** Probability of testing negative among true negative cases.
+- Increasing sensitivity may reduce specificity, depending on the threshold.
+- Threshold selection should reflect the relative costs of false positives and false negatives.
+
+### Handling Class Imbalance
+
+Possible strategies include:
+- Use appropriate metrics such as PR-AUC, sensitivity, and precision.
+- Apply class weights or cost-sensitive learning.
+- Consider resampling within training data only.
+- Adjust classification thresholds based on the decision objective.
+- Evaluate calibration and performance on representative test data.
+
+**Interview tip:** Avoid oversampling or undersampling the full dataset before splitting into training and test sets.
+
+### Feature Selection vs. Feature Extraction
+
+- **Feature selection:** Retains a subset of original predictors.
+- **Feature extraction:** Creates new representations from original variables.
+- Examples: LASSO-based selection versus PCA.
+- Feature selection can improve interpretability; feature extraction can capture shared structure.
+
+---
+
+## 7. Study Design and Causal Inference
+
+### Experimental vs. Observational Studies
+
+- **Experimental:** Researchers assign exposures or interventions.
+- **Observational:** Researchers observe naturally occurring exposures.
+- Randomized experiments can reduce baseline confounding when properly conducted.
+- Observational causal analyses require additional assumptions and design strategies.
+
+### Randomization vs. Stratification vs. Blocking
+
+- **Randomization:** Assigns treatments using a random mechanism.
+- **Stratification:** Divides observations into meaningful subgroups.
+- **Blocking:** Groups similar experimental units and randomizes treatment within blocks.
+- These techniques can improve balance or statistical efficiency.
+
+### Confounders vs. Mediators vs. Colliders
+
+- **Confounder:** A variable involved in a noncausal path between exposure and outcome that may bias an association.
+- **Mediator:** A variable on a causal pathway from exposure to outcome.
+- **Collider:** A variable influenced by two other variables, conditioning on which can induce association.
+- **Interview tip:** Adjusting for every available variable is not always appropriate.
+- Causal diagrams can help identify valid adjustment sets.
+
+### Selection Bias vs. Information Bias
+
+- **Selection bias:** Distortion caused by how observations enter or remain in a study or analysis.
+- **Information bias:** Distortion from inaccurate measurement or classification.
+- Examples include nonresponse and misclassification.
+- Different biases require different prevention or correction strategies.
+
+### Internal vs. External Validity
+
+- **Internal validity:** Whether the study supports a valid conclusion for the studied population under its design and assumptions.
+- **External validity:** Whether results generalize to other populations or settings.
+- Randomization can strengthen internal validity without guaranteeing external validity.
+
+### Intention-to-Treat vs. Per-Protocol Analysis
+
+- **Intention-to-treat (ITT):** Compares participants according to their randomized assignment, regardless of adherence.
+- **Per-protocol:** Targets effects under adherence to the assigned protocol.
+- ITT preserves the randomized comparison when outcome data are appropriately handled.
+- Naive per-protocol analyses can introduce selection bias.
+
+### A/B Testing and Sample Size Determination
+
+- A/B testing compares interventions, versions, or strategies.
+- Define the primary outcome, effect size of interest, significance level, and power before testing.
+- Consider randomization unit, multiple testing, repeated looks, and interference.
+- **Interview tip:** Repeatedly checking ordinary p-values and stopping when significant can inflate false positives unless the design accounts for sequential testing.
+
+### Relative Risk vs. Odds Ratio vs. Risk Difference
+
+- **Risk ratio (RR):** Probability of an event in one group divided by that in another.
+- **Odds ratio (OR):** Ratio of event odds.
+- **Risk difference (RD):** Difference in event probabilities.
+- RR and RD are often intuitive for communicating effects when risks are estimable.
+- OR approximates RR when events are rare, but not generally when outcomes are common.
+
+### Association vs. Causal Effect
+
+- Associations describe observed or modeled relationships.
+- Causal effects compare outcomes under hypothetical interventions.
+- Potential outcomes notation represents outcomes under different treatment assignments.
+- Causal estimation depends on assumptions such as exchangeability, consistency, and positivity.
+
+---
+
+## 8. Data Quality and Practical Analysis
+
+### MCAR vs. MAR vs. MNAR
+
+- **MCAR (Missing Completely at Random):** Missingness is independent of observed and missing data values.
+- **MAR (Missing at Random):** Conditional on observed information, missingness does not depend on missing values.
+- **MNAR (Missing Not at Random):** Missingness still depends on unobserved information after conditioning on observed variables.
+- **Interview tip:** These mechanisms cannot generally be established from observed data alone.
+
+### Complete-Case Analysis vs. Multiple Imputation
+
+- **Complete-case analysis:** Uses observations with complete values for required variables.
+- Simple but may lose efficiency or introduce bias.
+- **Multiple imputation:** Generates multiple plausible completed datasets, analyzes each, and pools estimates.
+- Valid imputation depends on model specification and missingness assumptions.
+
+### Identifying and Handling Outliers
+
+- Investigate outliers using boxplots, scatterplots, residuals, and influence diagnostics.
+- Determine whether they represent errors, unusual but valid observations, or meaningful subpopulations.
+- Potential responses include correction of errors, robust methods, transformations, or sensitivity analyses.
+- **Interview tip:** Do not automatically remove valid observations just because they are extreme.
+
+### Transformations vs. Standardization vs. Normalization
+
+- **Transformation:** Changes a variable's mathematical scale (e.g., log or square root).
+- **Standardization:** Commonly subtracts the mean and divides by standard deviation.
+- **Normalization:** Ambiguous term; may refer to min-max scaling, vector normalization, or other rescaling methods.
+- Transformations can change model relationships and interpretation.
+
+### What to Do with Skewed Data
+
+- Examine the outcome, model residuals, and research objective.
+- Consider robust methods, appropriate GLMs, transformations, or bootstrap inference.
+- Linear regression does not require predictors or the marginal outcome distribution to be normal.
+- Small-sample inference may depend more strongly on distributional assumptions.
+
+### What to Do with Small Sample Sizes
+
+- Report uncertainty and avoid overinterpreting non-significant findings.
+- Consider exact methods when applicable.
+- Use parsimonious models and assess sensitivity to assumptions.
+- Bootstrap methods are not automatically reliable for extremely small or unrepresentative samples.
+- Consider whether meaningful inference is possible with available information.
+
+### Handling Highly Correlated Predictors
+
+- Investigate collinearity using correlations, VIFs, and subject-matter knowledge.
+- Avoid removing predictors solely based on a correlation threshold.
+- Consider combining variables, regularization, or choosing predictors based on the estimand.
+- Distinguish problems with coefficient interpretation from problems with prediction.
+
+### Detecting and Preventing Data Leakage
+
+- Identify information that would not exist at prediction time.
+- Split data before fitting preprocessing steps.
+- Fit imputation, scaling, and feature selection using training data only.
+- Use time-aware or group-aware splits when necessary.
+- Inspect unexpectedly high validation performance for leakage.
+
+### Reproducibility and Documentation
+
+- Set random seeds when randomness is involved.
+- Record package versions, data provenance, cleaning decisions, and model specifications.
+- Use scripts or R Markdown instead of undocumented manual steps.
+- Separate exploratory analyses from confirmatory analyses.
+- Preserve raw data and maintain a clear analysis pipeline.
+
+---
+
+## 9. Specialized Concepts Worth Knowing
+
+### Cross-Sectional vs. Longitudinal vs. Time Series Data
+
+- **Cross-sectional:** Observations collected at a single time or across a defined time window.
+- **Longitudinal:** Repeated observations on the same individuals or units.
+- **Time series:** Observations indexed over time, often with temporal dependence.
+- Analysis must account for relevant within-unit or temporal correlation.
+
+### Repeated-Measures ANOVA vs. Mixed-Effects Models vs. GEE
+
+- **Repeated-measures ANOVA:** Common framework for continuous repeated outcomes under particular covariance and design assumptions.
+- **Mixed-effects models:** Include fixed and random effects to model dependence and subject-specific variation.
+- **GEE:** Estimates population-averaged relationships while accounting for within-cluster correlation through estimating equations.
+- Mixed models and GEE can accommodate many structures that are awkward in classical repeated-measures ANOVA.
+
+### Hazard Ratio vs. Risk Ratio vs. Odds Ratio
+
+- **Hazard ratio:** Ratio of instantaneous event rates conditional on remaining event-free at a given time.
+- **Risk ratio:** Ratio of cumulative event probabilities over a specified period.
+- **Odds ratio:** Ratio of event odds.
+- These quantities answer different questions and should not be interpreted interchangeably.
+
+### Kaplan–Meier vs. Cox Regression
+
+- **Kaplan–Meier:** Nonparametric estimator of the survival function.
+- **Cox proportional hazards model:** Semiparametric regression model for associations between covariates and hazard.
+- Kaplan–Meier curves provide descriptive survival estimates.
+- Cox regression can adjust for covariates, subject to model assumptions.
+
+### PCA vs. Factor Analysis
+
+- **PCA:** Constructs components that capture variation in observed variables.
+- **Factor analysis:** Models observed correlations using underlying latent factors and residual variation.
+- PCA is commonly used for dimension reduction.
+- Factor analysis is often used to investigate latent constructs.
+
+### Clustering vs. Classification
+
+- **Clustering:** Identifies patterns or groups without known class labels.
+- **Classification:** Learns to predict predefined class labels.
+- Clusters are algorithm- and distance-dependent and do not automatically represent natural categories.
+
+### Bootstrap vs. Permutation Tests
+
+- **Bootstrap:** Resamples data, commonly with replacement, to approximate estimator variability or sampling distributions.
+- **Permutation test:** Reassigns labels or values according to a null exchangeability structure to assess a hypothesis.
+- Bootstrap is frequently used for standard errors and confidence intervals.
+- Permutation methods are frequently used for hypothesis tests.
+
+### Bayesian Credible Intervals vs. Frequentist Confidence Intervals
+
+- **Credible interval:** Interval containing a specified amount of posterior probability, conditional on the Bayesian model.
+- **Confidence interval:** Interval from a procedure with a specified long-run coverage probability.
+- They can be numerically similar in some cases but have different interpretations.
+
+---
+
+## 10. Applied Statistical Interview Scenarios
+
+### How Would You Approach an Unfamiliar Dataset?
+
+1. Clarify the business or research question.
+2. Identify the observational unit, outcome, predictors, and data structure.
+3. Check dimensions, data types, missingness, duplicates, and implausible values.
+4. Explore distributions and relationships.
+5. Determine a suitable analysis or modeling strategy.
+6. Evaluate assumptions, uncertainty, and sensitivity.
+7. Communicate results and limitations.
+
+### How Would You Choose an Appropriate Statistical Test?
+
+Consider:
+- The scientific question and target estimand.
+- Outcome type (continuous, binary, count, time-to-event).
+- Predictor types and number of groups.
+- Independence, pairing, clustering, or repeated measurements.
+- Relevant assumptions and sample size.
+- Need for covariate adjustment.
+
+Choose the method that addresses the question with defensible assumptions.
+
+### What Would You Do If Your Data Were Not Normally Distributed?
+
+- Identify whether normality is actually required for the intended analysis.
+- Examine sample size, outliers, skewness, and relevant residual distributions.
+- Consider robust or rank-based methods, transformations, GLMs, or resampling.
+- Explain whether an alternative method changes the estimand.
+
+### What Would You Do If Your Sample Size Were Very Small?
+
+- Investigate data quality and study design.
+- Assess whether assumptions are plausible.
+- Prefer parsimonious methods.
+- Consider exact procedures when suitable.
+- Emphasize effect sizes and uncertainty.
+- Avoid equating lack of significance with lack of effect.
+
+### How Would You Handle Missing Data?
+
+- Quantify missingness by variable and subgroup.
+- Investigate plausible missingness mechanisms.
+- Determine whether missingness affects predictors, outcomes, or both.
+- Consider complete-case analysis, multiple imputation, or model-based approaches.
+- Evaluate sensitivity to plausible departures from assumptions.
+
+### How Would You Identify and Address Confounding?
+
+- Define the exposure-outcome relationship of interest.
+- Use subject-matter knowledge and causal diagrams.
+- Identify plausible common causes.
+- Avoid inappropriate adjustment for mediators or colliders.
+- Consider stratification, regression adjustment, matching, or weighting.
+- Discuss residual and unmeasured confounding.
+
+### How Would You Investigate a Non-Significant Result?
+
+- Examine the estimated effect and confidence interval.
+- Assess sample size and power for meaningful alternatives.
+- Consider model assumptions and data quality.
+- Distinguish inconclusive evidence from evidence of equivalence.
+- Avoid claiming no effect solely because $p > 0.05$.
+
+### What Would You Do If Two Models Gave Different Results?
+
+- Verify that they use the same observations and outcome definitions.
+- Examine differences in covariates, functional forms, and assumptions.
+- Check interactions, outliers, collinearity, and influential observations.
+- Determine whether models target the same estimand.
+- Compare sensitivity, diagnostics, and predictive performance as appropriate.
+
+### How Would You Evaluate a Predictive Model?
+
+- Choose metrics based on the outcome and decision objective.
+- Establish a baseline model.
+- Use appropriate cross-validation or holdout data.
+- Evaluate discrimination, calibration, error, and subgroup performance where relevant.
+- Inspect overfitting and data leakage.
+- Consider interpretability and deployment conditions.
+
+### How Would You Explain a Statistical Result to a Nontechnical Audience?
+
+- Start with the research question.
+- Explain the estimated effect in meaningful units.
+- Communicate uncertainty without excessive statistical jargon.
+- Differentiate association from causation.
+- Describe limitations and practical implications.
+- Include a clear visual when helpful.
+
+---
+
+## 11. Essential Statistical Formulas
+
+### Mean, Variance, and Standard Deviation
+
+Sample mean:
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+
+Sample variance:
+
+$$
+s^2 = \frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}
+$$
+
+Sample standard deviation:
+
+$$
+s = \sqrt{s^2}
+$$
+
+### Standard Error and Confidence Intervals
+
+Standard error of the sample mean for independent observations:
+
+$$
+SE(\bar{x}) = \frac{s}{\sqrt{n}}
+$$
+
+Common two-sided t confidence interval for a population mean:
+
+$$
+\bar{x} \pm t_{1-\alpha/2,\ n-1}\frac{s}{\sqrt{n}}
+$$
+
+Under normal sampling assumptions, this has exact coverage for an unknown population variance.
+
+### z-Statistic and t-Statistic
+
+One-sample z-statistic with known population SD:
+
+$$
+z = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}
+$$
+
+One-sample t-statistic with estimated SD:
+
+$$
+t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}
+$$
+
+### Pearson Correlation Coefficient
+
+$$
+r = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}
+{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2
+\sum_{i=1}^{n}(y_i-\bar{y})^2}}
+$$
+
+Pearson correlation ranges from -1 to 1.
+
+### Simple Linear Regression Equation
+
+$$
+Y_i = \beta_0 + \beta_1X_i + \epsilon_i
+$$
+
+where $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\epsilon_i$ represents the error.
+
+### Logistic Regression and the Logit Function
+
+$$
+\log\left(\frac{p}{1-p}\right) =
+\beta_0 + \beta_1X_1 + \cdots + \beta_kX_k
+$$
+
+For a one-unit predictor change with other predictors held fixed:
+
+$$
+OR = e^{\beta_j}
+$$
+
+### Odds Ratio and Relative Risk
+
+For a 2-by-2 table:
+
+| | Event | No event |
+|---|---:|---:|
+| Exposed | a | b |
+| Unexposed | c | d |
+
+$$
+OR = \frac{ad}{bc}
+$$
+
+$$
+RR = \frac{a/(a+b)}{c/(c+d)}
+$$
+
+$$
+RD = \frac{a}{a+b} - \frac{c}{c+d}
+$$
+
+### Sensitivity, Specificity, Precision, and Recall
+
+$$
+Sensitivity = Recall = \frac{TP}{TP+FN}
+$$
+
+$$
+Specificity = \frac{TN}{TN+FP}
+$$
+
+$$
+Precision = \frac{TP}{TP+FP}
+$$
+
+$$
+Accuracy = \frac{TP+TN}{TP+TN+FP+FN}
+$$
+
+$$
+F1 = 2\frac{Precision\cdot Recall}
+{Precision+Recall}
+$$
+
+### Bayes' Theorem
+
+$$
+P(A\mid B) =
+\frac{P(B\mid A)P(A)}{P(B)}
+$$
+
+Bayesian inference uses this relationship to update prior beliefs using observed evidence.
+
+### Sample Size and Power Relationships
+
+For estimating a mean with a normal-approximation margin of error $E$ and known or anticipated SD $\sigma$:
+
+$$
+n \approx
+\left(\frac{z_{1-\alpha/2}\sigma}{E}\right)^2
+$$
+
+For comparing two independent means with equal allocation, common SD $\sigma$, and target difference $\delta$:
+
+$$
+n_{\text{per group}} \approx
+\frac{2\sigma^2(z_{1-\alpha/2}+z_{1-\beta})^2}
+{\delta^2}
+$$
+
+These are planning approximations. Actual calculations depend on study design, distributional assumptions, allocation ratios, and testing procedures.
+
+---
+
+## 12. R Technical Interview Quick Reference
+
+### Data Manipulation with dplyr
+
+```{r eval=FALSE}
+library(dplyr)
+
+df %>%
+  filter(age >= 18) %>%
+  mutate(age_group = if_else(age >= 65, "65+", "<65")) %>%
+  select(id, age, age_group, outcome)
+```
+
+Common functions:
+- `filter()` selects rows.
+- `select()` selects columns.
+- `mutate()` creates or modifies variables.
+- `arrange()` sorts observations.
+- `distinct()` removes duplicate rows or combinations.
+
+### Grouped Summaries and Aggregation
+
+```{r eval=FALSE}
+df %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    mean_outcome = mean(outcome, na.rm = TRUE),
+    sd_outcome = sd(outcome, na.rm = TRUE),
+    median_outcome = median(outcome, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+### Joins and Reshaping Data
+
+```{r eval=FALSE}
+library(dplyr)
+library(tidyr)
+
+# Join on a shared ID
+combined <- left_join(df1, df2, by = "id")
+
+# Wide to long
+long_df <- df %>%
+  pivot_longer(
+    cols = c(baseline, followup),
+    names_to = "time",
+    values_to = "measurement"
+  )
+
+# Long to wide
+wide_df <- long_df %>%
+  pivot_wider(
+    names_from = time,
+    values_from = measurement
+  )
+```
+
+### Handling Missing Values
+
+```{r eval=FALSE}
+# Missing values per column
+colSums(is.na(df))
+
+# Complete cases
+complete_df <- df[complete.cases(df), ]
+
+# Mean imputation (illustrative only)
+df$outcome_imputed <- ifelse(
+  is.na(df$outcome),
+  mean(df$outcome, na.rm = TRUE),
+  df$outcome
+)
+```
+
+Mean imputation is generally not recommended for formal inference because it can distort variance and relationships. Multiple imputation or other principled methods may be preferable.
+
+### Writing Functions and Using apply/map
+
+```{r eval=FALSE}
+# Custom function
+calc_cv <- function(x) {
+  x <- x[!is.na(x)]
+  mean_x <- mean(x)
+  if (length(x) < 2 || mean_x == 0) return(NA_real_)
+  sd(x) / mean_x
+}
+
+calc_cv(df$outcome)
+
+# Apply a function across numeric columns
+df %>%
+  summarise(across(where(is.numeric), ~mean(.x, na.rm = TRUE)))
+
+# Map a function over a list
+purrr::map_dbl(list(1:5, 2:8, 3:10), mean)
+```
+
+### Basic Statistical Tests in R
+
+```{r eval=FALSE}
+# One-sample t-test
+t.test(df$outcome, mu = 0)
+
+# Independent groups: Welch's t-test
+t.test(outcome ~ group, data = df)
+
+# Paired t-test
+t.test(df$before, df$after, paired = TRUE)
+
+# Wilcoxon rank-sum test
+wilcox.test(outcome ~ group, data = df)
+
+# One-way ANOVA
+fit_aov <- aov(outcome ~ group, data = df)
+summary(fit_aov)
+
+# Kruskal-Wallis
+kruskal.test(outcome ~ group, data = df)
+
+# Pearson correlation
+cor.test(df$x, df$y, method = "pearson")
+
+# Chi-square test
+chisq.test(table(df$group, df$event))
+
+# Fisher's exact test
+fisher.test(table(df$group, df$event))
+```
+
+### Fitting and Interpreting Regression Models
+
+```{r eval=FALSE}
+# Multiple linear regression
+lm_fit <- lm(
+  outcome ~ age + treatment + bmi,
+  data = df
+)
+
+summary(lm_fit)
+confint(lm_fit)
+
+# Logistic regression
+logit_fit <- glm(
+  event ~ age + treatment + bmi,
+  data = df,
+  family = binomial()
+)
+
+summary(logit_fit)
+
+# Odds ratios and confidence intervals
+exp(coef(logit_fit))
+exp(confint(logit_fit))
+```
+
+Note: Binary outcomes should be coded consistently, and coefficient interpretation depends on the reference level.
+
+### Extracting Model Results
+
+```{r eval=FALSE}
+library(broom)
+
+# Coefficient table
+tidy(lm_fit, conf.int = TRUE)
+
+# Model-level metrics
+glance(lm_fit)
+
+# Observation-level fitted values and residuals
+augment(lm_fit)
+
+# Predict new observations
+new_data <- data.frame(
+  age = 50,
+  treatment = "Control",
+  bmi = 25
+)
+
+predict(lm_fit, newdata = new_data)
+```
+
+The `treatment` value must match a valid level in the fitted model.
+
+### Creating Plots with ggplot2
+
+```{r eval=FALSE}
+library(ggplot2)
+
+# Histogram
+ggplot(df, aes(x = outcome)) +
+  geom_histogram(bins = 30) +
+  theme_minimal()
+
+# Boxplot
+ggplot(df, aes(x = group, y = outcome)) +
+  geom_boxplot() +
+  theme_minimal()
+
+# Scatterplot with linear regression
+ggplot(df, aes(x = age, y = outcome)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = TRUE) +
+  theme_minimal()
+```
+
+### Debugging and Reproducible Analysis
+
+```{r eval=FALSE}
+# Inspect data
+str(df)
+summary(df)
+head(df)
+
+# Check variable types and missing values
+sapply(df, class)
+colSums(is.na(df))
+
+# Reproducibility
+set.seed(123)
+
+# Session information
+sessionInfo()
+
+# Check model diagnostics
+plot(lm_fit)
+```
+
+Common R troubleshooting topics:
+- Factors vs. character variables.
+- Missing-value handling.
+- Data-frame joins with duplicate IDs.
+- Incorrect model formulas.
+- Reference levels for categorical predictors.
+- Package masking and namespace conflicts.
+- Train/test data leakage.
