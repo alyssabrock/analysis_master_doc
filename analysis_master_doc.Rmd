@@ -4,270 +4,441 @@ subtitle: "Alyssa Brock and Avneet Virk"
 output: pdf_document
 ---
 
-# Data Exploration and Assessing Assumptions
+# Statistical Analysis Decision Guide
 
-### 1. Data Structure and Initial Inspection
+Statistical methods should be selected based on the research question, variable types, study design, and underlying assumptions.
 
-Understanding the dataset before conducting any analysis.
+Before selecting an analysis, consider:
 
-\begin{itemize}
-\item Dataset dimensions (rows and columns)
-\item Variable types (numeric, categorical, ordinal, date/time)
-\item Continuous vs. discrete variables
-\item Identifying unique observations and duplicate records
-\item Identifying unique values and categories
-\item Data types and class conversion
-\item Data consistency and formatting
-\item Identifying invalid or impossible values
-\item Data validation and integrity checks
-\end{itemize}
+- **Research objective:** Description, comparison, association, prediction, or causal inference?
+- **Outcome variable:** Continuous, categorical, ordinal, count, or time-to-event?
+- **Predictor variables:** Continuous, categorical, or both?
+- **Study design:** Independent, paired, repeated, or clustered observations?
+- **Assumptions:** Are the method's distributional and independence assumptions reasonable?
+- **Sample size:** Is there sufficient information for reliable estimates and adequate power?
 
-R functions: str(), glimpse(), summary(), head(), dim(), nrow(), ncol(), unique(), table()
+## Choosing an Analysis Based on the Research Question
 
-### 2. Descriptive Statistics and Summary Measures
+The research objective and data structure determine which statistical methods are appropriate.
 
-Summarizing the characteristics and distribution of variables.
+| Research objective | Example question | Common methods |
+|---|---|---|
+| Describe data | What is the average income? | Descriptive statistics |
+| Compare groups | Do treatment groups differ? | t-test, ANOVA, Wilcoxon, Kruskal–Wallis |
+| Test associations | Is smoking associated with disease? | Chi-square, Fisher's exact test |
+| Examine relationships | Is age related to blood pressure? | Correlation, regression |
+| Explain variation | Which factors are associated with salary? | Multiple regression, GLMs |
+| Predict outcomes | Which customers will churn? | Logistic regression, random forests |
+| Estimate causal effects | Did a policy reduce unemployment? | RCTs, difference-in-differences, IV |
+| Analyze time trends | What will sales be next month? | ARIMA, exponential smoothing |
+| Analyze event times | How long until an event occurs? | Kaplan–Meier, Cox regression |
+| Identify structure | Are there distinct customer groups? | Clustering, PCA |
 
-\begin{itemize}
-\item Mean, median, and mode
-\item Minimum and maximum
-\item Range
-\item Variance and standard deviation
-\item Interquartile range (IQR)
-\item Quartiles and percentiles
-\item Coefficient of variation
-\item Skewness
-\item Kurtosis
-\item Five-number summary
-\item Grouped summary statistics
-\item Weighted descriptive statistics
-\end{itemize}
+\newpage
 
-#### 2.1 Measures of Central Tendency
+### Quick Method Selection by Outcome and Design
 
-Measures used to identify the center or typical value of a dataset.
+| Outcome | Study design / question | Common method |
+|---|---|---|
+| Continuous | One sample vs. reference value | One-sample t-test |
+| Continuous | Two independent groups | Welch's t-test |
+| Continuous | Two paired measurements | Paired t-test |
+| Continuous | 3+ independent groups | ANOVA, Welch's ANOVA |
+| Continuous | 3+ repeated measurements | Repeated-measures ANOVA, mixed models |
+| Continuous | Multiple predictors | Linear regression |
+| Binary | Association between categorical variables | Chi-square, Fisher's exact test |
+| Binary | Multiple predictors | Logistic regression |
+| Nominal categorical | Multiple outcome categories | Multinomial logistic regression |
+| Ordinal | Ordered categorical outcome | Ordinal logistic regression |
+| Count | Number of events | Poisson, negative binomial regression |
+| Time-to-event | Censored event times | Survival analysis |
+| Repeated / clustered | Correlated observations | Mixed-effects models, GEE |
+| Time series | Temporally dependent observations | ARIMA, time series regression |
 
-\begin{itemize}
-    \item \texttt{mean()} -- Arithmetic mean
-    \item \texttt{median()} -- Median
-    \item \texttt{Mode()} -- Mode (from \texttt{DescTools}; base R does not have a built-in statistical mode function)
-    \item \texttt{weighted.mean()} -- Weighted mean
-    \item \texttt{Hmisc::wtd.mean()} -- Weighted mean with additional options
-    \item \texttt{DescTools::Mode()} -- Statistical mode
-\end{itemize}
+## Parametric vs. Nonparametric Methods
 
-#### 2.2 Measures of Variability and Dispersion
+**Parametric methods** specify a statistical model using a finite set of parameters, often with distributional assumptions. **Nonparametric methods** make fewer or more flexible assumptions about the population distribution.
 
-Measures used to quantify the spread or variability of observations.
+| Consideration | Parametric | Nonparametric |
+|---|---|---|
+| Common methods | t-test, ANOVA, Pearson correlation | Wilcoxon, Kruskal–Wallis, Spearman |
+| Data types | Often continuous; depends on model | Often ordinal or continuous |
 
-\begin{itemize}
-    \item \texttt{var()} -- Variance
-    \item \texttt{sd()} -- Standard deviation
-    \item \texttt{IQR()} -- Interquartile range
-    \item \texttt{range()} -- Minimum and maximum
-    \item \texttt{diff(range())} -- Range width
-    \item \texttt{mad()} -- Median absolute deviation
-    \item \texttt{DescTools::Var()} -- Variance
-    \item \texttt{DescTools::CoefVar()} -- Coefficient of variation
-    \item \texttt{matrixStats::rowVars()} -- Row-wise variance
-    \item \texttt{matrixStats::colVars()} -- Column-wise variance
-\end{itemize}
+## Sample Size Considerations
 
-#### 2.3 Measures of Position and Distribution
+Sample size affects statistical power, precision, and the stability of statistical estimates.
 
-Measures used to describe the relative position and distribution of observations.
-
-\begin{itemize}
-    \item \texttt{min()} -- Minimum
-    \item \texttt{max()} -- Maximum
-    \item \texttt{quantile()} -- Quantiles
-    \item \texttt{rank()} -- Observation ranks
-    \item \texttt{scale()} -- Standardization
-    \item \texttt{ecdf()} -- Empirical cumulative distribution function
-    \item \texttt{summary()} -- Summary statistics
-    \item \texttt{fivenum()} -- Five-number summary
-    \item \texttt{Hmisc::describe()} -- Detailed descriptive statistics
-    \item \texttt{psych::describe()} -- Comprehensive descriptive statistics
-\end{itemize}
-
-#### 2.4 Shape of Distribution
-
-Measures used to describe the shape and characteristics of a distribution.
-
-\begin{itemize}
-    \item \texttt{e1071::skewness()} -- Skewness
-    \item \texttt{moments::skewness()} -- Skewness
-    \item \texttt{e1071::kurtosis()} -- Kurtosis
-    \item \texttt{moments::kurtosis()} -- Kurtosis
-    \item \texttt{PerformanceAnalytics::skewness()} -- Skewness
-    \item \texttt{PerformanceAnalytics::kurtosis()} -- Kurtosis
-\end{itemize}
-
-\textit{Note: Different packages can use different conventions for calculating skewness and kurtosis, so be mindful of the definitions.}
-
-#### 2.5 Frequency and Categorical Summaries
-
-Functions used to summarize categorical variables and frequency distributions.
-
-\begin{itemize}
-    \item \texttt{table()} -- Frequency counts
-    \item \texttt{prop.table()} -- Proportions
-    \item \texttt{margin.table()} -- Marginal frequencies
-    \item \texttt{addmargins()} -- Add row and column totals
-    \item \texttt{xtabs()} -- Cross-tabulation
-    \item \texttt{janitor::tabyl()} -- Tidy frequency tables
-    \item \texttt{janitor::adorn\_totals()} -- Add totals to frequency tables
-    \item \texttt{dplyr::count()} -- Count observations by group
-\end{itemize}
-
-#### 2.6 Grouped and Advanced Summaries
-
-Functions used to calculate descriptive statistics across groups, columns, or other subsets of data.
-
-\begin{itemize}
-    \item \texttt{dplyr::summarise()} -- Calculate summary statistics
-    \item \texttt{dplyr::group\_by()} -- Group observations
-    \item \texttt{dplyr::across()} -- Apply functions across multiple columns
-    \item \texttt{aggregate()} -- Grouped summary statistics
-    \item \texttt{by()} -- Apply functions to subsets
-    \item \texttt{tapply()} -- Apply functions by groups
-    \item \texttt{vapply()} -- Type-safe vectorized application
-    \item \texttt{purrr::map()} -- Apply functions across objects
-    \item \texttt{data.table::.(...)} -- Efficient grouped calculations with \texttt{data.table}
-\end{itemize}
-
-#### 2.7 Additional Useful Packages
-
-Packages that provide additional functionality for descriptive statistics and summary analysis.
-
-\begin{center}
-\begin{tabular}{ll}
-\hline
-\textbf{Package} & \textbf{Main Purpose} \\
-\hline
-\texttt{psych} & Comprehensive descriptive statistics \\
-\texttt{DescTools} & Statistical summaries and descriptive measures \\
-\texttt{Hmisc} & Descriptive statistics and weighted summaries \\
-\texttt{skimr} & Quick, readable dataset summaries \\
-\texttt{summarytools} & Detailed descriptive reports \\
-\texttt{janitor} & Frequency tables and data cleaning \\
-\texttt{moments} & Skewness and kurtosis \\
-\texttt{e1071} & Statistical moments and other statistical tools \\
-\texttt{matrixStats} & Efficient row/column statistics \\
-\texttt{dplyr} & Grouped and flexible summaries \\
-\hline
-\end{tabular}
-\end{center}
-
-#### 2.8 Recommended R Functions Reference
-
-The following is a consolidated list of useful R functions for descriptive statistics.
-
-\begin{verbatim}
-# Central tendency
-mean()
-median()
-weighted.mean()
-DescTools::Mode()
-
-# Dispersion
-var()
-sd()
-IQR()
-mad()
-range()
-min()
-max()
-DescTools::CoefVar()
-
-# Position and distribution
-quantile()
-rank()
-fivenum()
-summary()
-psych::describe()
-skimr::skim()
-
-# Distribution shape
-moments::skewness()
-moments::kurtosis()
-
-# Frequency and categorical summaries
-table()
-prop.table()
-xtabs()
-addmargins()
-janitor::tabyl()
-
-# Grouped summaries
-dplyr::group_by()
-dplyr::summarise()
-dplyr::across()
-aggregate()
-tapply()
-
-# Weighted summaries
-weighted.mean()
-Hmisc::wtd.mean()
-\end{verbatim}
-
-### 3. Distribution Analysis
-
-### 4. Data Visualization and Exploratory Data Analysis
-
-### 5. Missing Data Analysis
-
-### 6. Outlier and Influential Observation Detection
-
-### 7. Assessing Distributional Assumptions
-
-### 8. Assessing Variance and Homogeneity Assumptions
-
-### 9. Assessing Independence and Dependence
-
-### 10. Assessing Relationships Between Variables
-
-### 11. Data Transformations and Preprocessing
-
-### 12. Sample Size and Data Adequacy
+| Factor | Impact |
+|---|---|
+| Sample size | Larger samples generally improve precision and power |
+| Effect size | Smaller effects generally require larger samples |
+| Variability | Greater variability typically reduces precision |
+| Significance level | Lower alpha generally requires larger samples |
+| Desired power | Higher power generally requires larger samples |
+| Group imbalance | Unequal group sizes can reduce efficiency |
+| Model complexity | More parameters generally require more information |
+| Dependence | Correlated observations reduce effective information |
+| Missing data | Can reduce precision and introduce bias |
 
 
-# Comparing Groups (Means/Medians)
+# Data Exploration and Descriptive Statistics
 
+Descriptive statistics summarize the central tendency, variability, distribution, and characteristics of a dataset. Exploratory data analysis (EDA) uses these summaries and visualizations to identify patterns, unusual observations, missing data, and potential data quality issues before formal analysis.
 
+## Measures of Central Tendency
+
+Measures of central tendency describe the typical or central value of a distribution.
+
+| Measure | Definition | When to use |
+|---|---|---|
+| Mean | Arithmetic average of observations | Symmetric distributions; sensitive to outliers |
+| Median | Middle value of ordered observations | Skewed distributions or data with outliers |
+| Mode | Most frequently occurring value | Categorical or discrete data |
+| Trimmed mean | Mean after removing a proportion of extreme values | Reducing sensitivity to outliers |
+| Weighted mean | Mean accounting for observation-specific weights | Unequal observation importance or survey weights |
+
+**Key distinction:** The mean is sensitive to extreme values, while the median is more robust. For symmetric distributions, the mean and median are often similar.
+
+```{r}
+x <- c(2, 4, 5, 6, 8, 10, 30)
+
+mean(x)
+median(x)
+mean(x, trim = 0.1)
+weighted.mean(x, w = c(1, 1, 1, 1, 1, 1, 2))
+
+# Mode (no built-in statistical mode function)
+names(which.max(table(x)))
+```
+
+Note: `mode()` in base R returns the object's storage mode, not the statistical mode. The example above returns the most frequent value as text; tied modes require additional handling.
+
+## Measures of Variability and Spread
+
+Measures of variability describe how dispersed observations are around their center.
+
+| Measure | Definition | Interpretation |
+|---|---|---|
+| Range | Maximum $-$ minimum | Total observed spread; sensitive to extremes |
+| Variance | Average squared deviation from the mean | Spread in squared units |
+| Standard deviation (SD) | Square root of variance | Typical scale of variation around the mean |
+| Interquartile range (IQR) | Q3 $-$ Q1 | Spread of the middle 50%; robust to outliers |
+| Median absolute deviation (MAD) | Median absolute distance from the median | Robust measure of dispersion |
+| Coefficient of variation (CV) | SD / mean | Relative variability; useful for positive, ratio-scale measurements |
+
+**Key distinction:** Standard deviation describes variability among observations, while standard error describes uncertainty in an estimated statistic (covered under Statistical Inference).
+
+```{r}
+x <- c(2, 4, 5, 6, 8, 10, 30)
+
+range(x)
+diff(range(x))
+var(x)
+sd(x)
+IQR(x)
+mad(x)
+sd(x) / mean(x)
+```
+
+**Note:** Base R's `var()` and `sd()` use the sample denominator \(n-1\). By default, `mad()` applies a scaling constant of approximately 1.4826 to estimate SD under normality.
+
+## Quantiles and Percentiles
+
+Quantiles divide an ordered distribution into proportions. Percentiles express these positions on a 0–100 scale.
+
+| Measure | Definition |
+|---|---|
+| Quartiles | Divide data into four parts (Q1 = 25th, Q2 = 50th, Q3 = 75th percentile) |
+| Deciles | Divide data into ten parts |
+| Percentiles | Indicate the value at or below which a specified percentage of observations falls |
+| Five-number summary | Minimum, Q1, median, Q3, maximum |
+
+**Uses:** Comparing distributions, identifying extreme observations, establishing reference ranges, and summarizing skewed data.
+
+```{r}
+x <- mtcars$mpg
+
+quantile(x, probs = c(0.25, 0.50, 0.75, 0.90))
+fivenum(x)
+summary(x)
+```
+
+**Note:** Sample quantiles can differ slightly across software or calculation methods because multiple quantile definitions exist. R's `quantile()` uses type 7 by default.
+
+## Exploring Distributions (Skewness, Kurtosis, Normality)
+
+Distribution shape affects the interpretation of summary statistics and the suitability of some statistical procedures.
+
+| Characteristic | Description |
+|---|---|
+| Symmetry | Similar distribution shape on either side of the center |
+| Right skew (positive) | Longer right tail; often mean > median |
+| Left skew (negative) | Longer left tail; often mean < median |
+| Skewness | Numerical measure of distribution asymmetry |
+| Kurtosis | Measure related to tail heaviness and extreme observations |
+| Normality | Approximate conformity to a symmetric, bell-shaped normal distribution |
+| Multimodality | Presence of multiple peaks, potentially indicating subgroups |
+
+For a normal distribution, skewness is 0 and kurtosis is 3 (excess kurtosis = 0).
+
+Common methods for evaluating distribution shape include histograms, density plots, Q–Q plots, and the Shapiro–Wilk normality test.
+
+```{r}
+x <- mtcars$mpg
+
+hist(x, main = "Distribution of MPG", xlab = "MPG")
+qqnorm(x)
+qqline(x)
+
+shapiro.test(x)
+```
+
+**Interpretation:** The Shapiro–Wilk test evaluates the null hypothesis that observations are normally distributed. A small p-value suggests evidence against normality, but a nonsignificant result does not establish normality.
+
+**Important:** Normality assumptions often concern residuals or paired differences, not necessarily the raw outcome or predictor variables. Visual diagnostics and the intended analysis should guide interpretation.
+
+## Missing Data Patterns and Mechanisms (MCAR, MAR, MNAR)
+
+Missing observations can reduce precision and introduce bias. Understanding why data are missing helps determine an appropriate handling strategy.
+
+| Mechanism | Definition | Example |
+|---|---|---|
+| MCAR (Missing Completely at Random) | Missingness is unrelated to observed or unobserved data values | Random equipment failure |
+| MAR (Missing at Random) | Missingness can depend on observed variables but not missing values after conditioning on observed data | Income missingness related to recorded age |
+| MNAR (Missing Not at Random) | Missingness depends on unobserved values even after conditioning on observed data | High earners less likely to report their income, even after accounting for observed characteristics |
+
+**Important distinctions:**
+
+- MCAR is the strongest assumption; MAR is less restrictive.
+- MAR does not mean missing values occur randomly without explanation.
+- Missingness mechanisms generally cannot be established from observed data alone.
+- Complete-case analysis can reduce power and introduce bias, depending on the missingness mechanism and analysis.
+
+```{r}
+# Count and proportion missing by variable
+colSums(is.na(airquality))
+colMeans(is.na(airquality))
+
+# Number of complete observations
+sum(complete.cases(airquality))
+```
+
+Methods for handling missing values, including multiple imputation and inverse probability weighting, are covered under Specialized Statistical Methods.
+
+## Data Transformations and Standardization
+
+Transformations change a variable's scale or distribution to improve interpretability, reduce skewness, or support modeling.
+
+| Method | Purpose | R function |
+|---|---|---|
+| Log transformation | Compress large values; often reduce right skew | `log(x)` |
+| Square-root transformation | Compress larger values; sometimes useful for counts | `sqrt(x)` |
+| Box–Cox transformation | Estimate a power transformation for positive values | `MASS::boxcox()` |
+| Yeo–Johnson transformation | Power transformation allowing zero and negative values | `bestNormalize::yeojohnson()` |
+| Standardization (z-score) | Center to mean 0 and scale to SD 1 | `scale(x)` |
+| Min-max scaling | Rescale to a specified range, usually [0, 1] | `(x - min(x)) / (max(x) - min(x))` |
+| Centering | Subtract the mean without changing SD | `scale(x, scale = FALSE)` |
+
+**Key distinctions:**
+
+- Standardization changes scale but does not make a variable normally distributed.
+- Log transformations require positive inputs; `log1p(x)` computes log(1 + x) and can accommodate nonnegative values.
+- Transformations affect coefficient interpretation and may change the estimand.
+- For predictive modeling, scaling parameters must be estimated on training data and applied unchanged to validation or test data to avoid leakage.
+
+```{r}
+x <- mtcars$mpg
+
+log(x)
+as.numeric(scale(x))
+(x - min(x)) / (max(x) - min(x))
+```
+
+## Exploratory Data Analysis (EDA)
+
+EDA is the process of examining data before formal statistical modeling to understand their structure, identify quality issues, and generate hypotheses.
+
+### Common EDA tasks
+
+| Task | Purpose |
+|---|---|
+| Inspect structure | Verify variable types, dimensions, and coding |
+| Summarize variables | Examine central tendency, spread, and frequencies |
+| Assess missingness | Identify missing observations and patterns |
+| Examine distributions | Identify skewness, unusual values, and multimodality |
+| Identify outliers | Detect potentially influential or erroneous observations |
+| Explore relationships | Examine associations between variables |
+| Compare groups | Identify differences in distributions or summaries |
+| Check data quality | Detect duplicates, invalid values, and inconsistent coding |
+
+```{r}
+# Basic EDA with a built-in dataset
+str(mtcars)
+dim(mtcars)
+head(mtcars)
+summary(mtcars)
+colSums(is.na(mtcars))
+
+# Examine relationships
+cor(mtcars[, c("mpg", "wt", "hp")])
+```
+
+**Important considerations:**
+
+- Outliers should be investigated rather than automatically removed.
+- Correlation does not imply causation.
+- Patterns discovered during EDA are exploratory and may require confirmation using separate data or appropriate validation.
+- EDA should inform subsequent modeling without allowing repeated data-driven decisions to be mistaken for prespecified hypothesis tests.
+
+\newpage
+
+# Probability, Sampling, and Statistical Inference
+
+## Standard Errors and Confidence Intervals
+## Hypothesis Testing and p-Values
+## Type I and Type II Errors, Power, and Sample Size
+## Effect Sizes and Practical Significance
+## Multiple Testing Corrections
+## Bootstrap and Permutation Methods
+
+# Comparing Groups
+
+## One-Sample Tests (t-Test, Wilcoxon Signed-Rank)
+## Independent Two-Sample Tests (Student's/Welch's t-Test, Mann–Whitney U)
+## Paired Two-Sample Tests (Paired t-Test, Wilcoxon Signed-Rank)
+## One-Way ANOVA and Welch's ANOVA
+## Repeated-Measures ANOVA
+## Nonparametric Multi-Group Tests (Kruskal–Wallis, Friedman)
+## Post-Hoc Tests and Multiple Comparisons
+## Effect Sizes for Group Comparisons
+## Equivalence and Noninferiority Testing
+
+\newpage
 
 # Relationships and Associations
 
+## Covariance and Correlation
+## Pearson, Spearman, and Kendall Correlations
+## Partial and Semi-Partial Correlations
+## Contingency Tables and Chi-Square Tests
+## Fisher's Exact Test
+## Measures of Categorical Association (Phi, Cramér's V)
+## Odds Ratios, Risk Ratios, and Risk Differences
+## Stratified Associations and Mantel–Haenszel Methods
+## Confounding and Effect Modification
 
+# Regression and Statistical Modeling
 
-# Regression, Statistical Modeling and Prediction
+## Simple and Multiple Linear Regression
+## Polynomial and Interaction Terms
+## Logistic Regression (Binary, Multinomial, Ordinal)
+## Generalized Linear Models (GLMs)
+## Poisson and Negative Binomial Regression
+## Zero-Inflated and Hurdle Models
+## Mixed-Effects Models (Fixed vs. Random Effects)
+## Generalized Additive Models (GAMs)
+## Quantile and Robust Regression
+## Regression Coefficient Interpretation
 
+\newpage
 
+# Model Building, Diagnostics, and Comparison
 
-# Model Building, Diagnostics and Comparison
+## Model Assumptions and Residual Diagnostics
+## Multicollinearity and Variance Inflation Factors (VIF)
+## Outliers, Leverage, and Influential Observations
+## Variable Selection and Feature Engineering
+## Regularization (Ridge, LASSO, Elastic Net)
+## Model Fit (R², Adjusted R², Deviance, Log-Likelihood)
+## Model Comparison (AIC, BIC, Likelihood Ratio Tests)
+## Cross-Validation and Train/Test Splits
+## Overfitting, Underfitting, and Bias-Variance Tradeoff
+## Model Calibration and Validation
 
+# Experimental Design and Causal Inference
 
+## Blocking, Stratification, and Factorial Designs
+## A/B Testing and Randomized Controlled Trials
+## Confounding, Selection Bias, and Collider Bias
+## Causal Diagrams (DAGs)
+## Potential Outcomes and Causal Estimands
+## Propensity Scores, Matching, and Weighting
+## Difference-in-Differences and Interrupted Time Series
+## Instrumental Variables and Regression Discontinuity
 
-# Visualization/ Presentation of Results
-
-One-Sample $t$-Test
-
-    Use when:
-
-Wilcoxon Signed-Rank Test
+\newpage
 
 # Predictive Modeling and Machine Learning
 
-
+## Supervised vs. Unsupervised Learning
+## Classification vs. Regression Problems
+## Decision Trees and Random Forests
+## Gradient Boosting (XGBoost, LightGBM)
+## k-Nearest Neighbors and Support Vector Machines
+## Naive Bayes and Neural Networks
+## Clustering (k-Means, Hierarchical, DBSCAN)
+## Hyperparameter Tuning and Resampling
+## Classification Metrics (Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC)
+## Regression Metrics (RMSE, MAE, R²)
+## Feature Importance and Model Interpretability
 
 # Time Series and Longitudinal Analysis
 
+## Time Series Components (Trend, Seasonality, Cycles)
+## Stationarity and Differencing
+## Autocorrelation and Partial Autocorrelation
+## AR, MA, ARMA, and ARIMA Models
+## Exponential Smoothing and Forecasting
+## Time Series Regression and Lagged Predictors
+## Forecast Evaluation and Rolling Validation
+## Repeated Measures and Longitudinal Data
+## Generalized Estimating Equations (GEE)
+## Longitudinal Mixed-Effects Models
 
+\newpage
 
 # Survival and Event-Time Analysis
 
-
+## Survival Data and Right-Censoring
+## Survival and Hazard Functions
+## Kaplan–Meier Estimation
+## Log-Rank Tests
+## Cox Proportional Hazards Regression
+## Proportional Hazards Assumption
+## Parametric Survival Models (Weibull, Exponential)
+## Accelerated Failure Time (AFT) Models
+## Time-Varying Covariates
+## Competing Risks
 
 # Multivariate and Dimension Reduction Techniques
 
+## Multivariate Data Exploration
+## Principal Component Analysis (PCA)
+## Exploratory and Confirmatory Factor Analysis
+## MANOVA and MANCOVA
+## Linear and Quadratic Discriminant Analysis
+## Canonical Correlation Analysis
+## Correspondence Analysis
+## Multidimensional Scaling (MDS)
+## t-SNE and UMAP
+## Cluster Validation and Interpretation
 
+\newpage
+
+# Specialized Statistical Methods
+
+## Bayesian Inference and Bayesian Regression
+## Missing Data Methods (Multiple Imputation, IPW)
+## Spatial Statistics and Spatial Regression
+## Survey Sampling, Weights, and Complex Survey Designs
+## Resampling and Monte Carlo Simulation
+
+# Visualization and Presentation of Results
+
+## Distribution Plots (Histograms, Density, Boxplots, Violin Plots)
+## Relationship Plots (Scatterplots, Correlation Heatmaps)
+## Group Comparison Plots
+## Regression and Diagnostic Plots
+## Time Series and Survival Plots
+## Effect Sizes and Confidence Interval Plots
+## Model Performance Visualizations
